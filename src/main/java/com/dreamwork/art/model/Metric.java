@@ -23,4 +23,36 @@ public class Metric {
         return String.format(
                 "Metric[id=%d, type='%s', value='%f']", id, type.name(), value);
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public MetricType getType() {
+        return type;
+    }
+
+    public void setType(MetricType type) {
+        this.type = type;
+    }
+
+    public double getValue() {
+        return value;
+    }
+
+    public void setValue(double value) {
+        this.value = value;
+    }
+
+    public Project getProject() {
+        return project;
+    }
+
+    public void setProject(Project project) {
+        this.project = project;
+    }
 }
