@@ -1,31 +1,28 @@
 package com.dreamwork.art.model;
 
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "projects")
+@Getter
+@Setter
+@RequiredArgsConstructor
 public class Project {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @NotBlank
-    private String name;
+    @NonNull
+    private final String name;
 
-    public Long getId() {
-        return id;
-    }
+    @NonNull
+    private final String githubRepo;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
+    @NonNull
+    private final String node_id;
 }
