@@ -1,37 +1,57 @@
 package com.dreamwork.art.controllers;
 
-import com.dreamwork.art.repository.ProjectRepository;
+import com.dreamwork.art.payload.GraphQLRequest;
+import com.dreamwork.art.repository.ProjectRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 
 @Component
 public class UpdateController {
     // TODO:
     String url = "https://api.github.com/graphql";
-    String token = "Bearer c3a7c8a7290460d8d0bad49c14f532c96725f355";
-    HttpEntity<String> entity;
+    String token = "Bearer 7c8285a2a7e55ff1694bd5720ffe25fe455baf02";
+    String query = "query($ids: [ID!]!) {  rateLimit {    cost    remaining    resetAt  }    nodes(ids: $ids) {    ... on Repository {      name      description      createdAt      updatedAt    }  }}";
 
     private RestTemplate rest;
-
-    JdbcTemplate jdbc;
+    private ProjectRepo projectRepo;
+    private HttpHeaders authHeader;
 
     @Autowired
-    public UpdateController(RestTemplate rest) {
+    public UpdateController(RestTemplate rest, ProjectRepo projectRepo) {
         this.rest = rest;
+        this.projectRepo = projectRepo;
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.set(HttpHeaders.AUTHORIZATION, token);
-        entity = new HttpEntity<>(headers);
+        this.authHeader = new HttpHeaders();
+        this.authHeader.set(HttpHeaders.AUTHORIZATION, token);
     }
 
-    @Scheduled(fixedDelay = 10000)
+    @Scheduled(fixedDelay = 60000)
     public void updateMetrics() {
-        // TODO: 17.10.2018  
+        List<String> ids = projectRepo.findAllNodeIds();
+
+        GraphQLRequest request = new GraphQLRequest();
+        request.setQuery(query);
+        request.addVariable("ids", ids);
+
+        ResponseEntity response = rest.exchange(
+                url,
+                HttpMethod.POST,
+                new HttpEntity<>(request, authHeader),
+                Object.class
+        );
+
+
     }
 }

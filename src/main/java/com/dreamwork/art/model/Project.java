@@ -1,28 +1,18 @@
 package com.dreamwork.art.model;
 
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-import javax.persistence.*;
-
-@Entity
-@Table(name = "projects")
 @Getter
 @Setter
 @RequiredArgsConstructor
+@NoArgsConstructor
 public class Project {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    @NonNull
+    private String name;
 
     @NonNull
-    private final String name;
+    private String githubRepo;
 
     @NonNull
-    private final String githubRepo;
-
-    @NonNull
-    private final String node_id;
+    private String node_id;
 }

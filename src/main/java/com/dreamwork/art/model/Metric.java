@@ -2,21 +2,14 @@ package com.dreamwork.art.model;
 
 import lombok.*;
 
-import javax.persistence.*;
-
-@Entity
-@Table(name = "metrics")
+@Getter
+@Setter
 @RequiredArgsConstructor
-@ToString
-@EqualsAndHashCode
-@Getter @Setter
+@NoArgsConstructor
 public class Metric {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private final @NonNull Long id;
+    @NonNull
+    private MetricType type;
 
-    @Enumerated(EnumType.STRING)
-    private final @NonNull MetricType type;
-
-    private double value;
+    @NonNull
+    private Float value;
 }
