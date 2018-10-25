@@ -2,6 +2,7 @@ package com.dreamwork.art.controllers;
 
 import com.dreamwork.art.model.Project;
 import com.dreamwork.art.payload.NewProjectDTO;
+import com.dreamwork.art.payload.ProjectsInfo;
 import com.dreamwork.art.repository.ProjectRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -20,7 +21,7 @@ import java.util.List;
 public class ProjectController {
     // TODO:
     String url = "https://api.github.com/repos/";
-    String token = "Bearer 7c8285a2a7e55ff1694bd5720ffe25fe455baf02";
+    String token = "Bearer 23ba5f53bb83329b15a9d9b2264201b4bf38ca4d";
     HttpEntity<String> entity;
 
     private ProjectRepo repo;
@@ -39,6 +40,14 @@ public class ProjectController {
     @RequestMapping(method = RequestMethod.GET)
     public List<Project> getProjects(@RequestParam int limit, @RequestParam int offset) {
         return repo.findProjects(limit, offset);
+    }
+
+    @RequestMapping(value = "/info", method = RequestMethod.GET)
+    public ProjectsInfo repoInfo() {
+        ProjectsInfo projectsInfo = new ProjectsInfo();
+        projectsInfo.setTotal(repo.totalNumberOfProjects());
+
+        return projectsInfo;
     }
 
     @RequestMapping(method = RequestMethod.POST)

@@ -7,9 +7,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Component
 public class ProjectRepo {
@@ -34,6 +32,14 @@ public class ProjectRepo {
             project.setNode_id(result.getString("node_id"));
             return project;
         });
+    }
+
+    public int totalNumberOfProjects() {
+        String cmd = "SELECT COUNT(*) FROM projects";
+
+        List<Integer> res = jdbc.query(cmd, (result, i) -> result.getInt(1));
+
+        return res.get(0);
     }
 
     public void batchAddGroup(List<MetricGroup> groups) {

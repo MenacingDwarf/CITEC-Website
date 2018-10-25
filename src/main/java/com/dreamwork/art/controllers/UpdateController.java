@@ -45,13 +45,13 @@ public class UpdateController {
         request.setQuery(query);
         request.addVariable("ids", ids);
 
+        /*
         ResponseEntity response = rest.exchange(
                 url,
                 HttpMethod.POST,
                 new HttpEntity<>(request, authHeader),
                 Object.class
         );
-
-
+        */
     }
 }
