@@ -1,3 +1,41 @@
+## Структура объекта "Проект" на примере
+
+    {
+      "id" : "ebedd3ac-12df-4c99-9ef9-6b16933b1cbe",
+      "name" : "Project 1",
+      "client" : "Client 1",
+      "description" : "Description 1",
+    
+      "groups" : [
+        {
+          "timestamp" : "yyyy.MM.dd.HH.mm.ss",
+          "metrics" : [
+            {"type" : 0, "value" : 0.247},
+            {"type" : 1, "value" : 0.875},
+            {"type" : 2, "value" : 0.224}
+          ]
+        },
+    
+        {
+          "timestamp" : "yyyy.MM.dd.HH.mm.ss",
+          "metrics" : [
+            {"type" : 0, "value" : 0.275},
+            {"type" : 1, "value" : 0.8474},
+            {"type" : 2, "value" : 0.422}
+          ]
+        },
+    
+        {
+          "timestamp" : "yyyy.MM.dd.HH.mm.ss",
+          "metrics" : [
+            {"type" : 0, "value" : 0.17},
+            {"type" : 1, "value" : 0.4778},
+            {"type" : 2, "value" : 0.789}
+          ]
+        }
+      ]
+    }
+
 
 ## REST API (application/json)
 
