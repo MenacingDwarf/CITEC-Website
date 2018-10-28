@@ -4,7 +4,12 @@
       "id" : "ebedd3ac-12df-4c99-9ef9-6b16933b1cbe",
       "name" : "Project 1",
       "client" : "Client 1",
+      "status" : "active",
       "description" : "Description 1",
+    
+      "tags" : [
+        "tag1", "tag2", "tag3"
+      ]
     
       "groups" : [
         {
@@ -36,6 +41,11 @@
       ]
     }
 
+value здесь предполагается только типа double
+
+timestamp - время обновления группы метрик
+
+Данная структура вернется к front-end при соответствующем запросе (см. Получение списка проектов)
 
 ## REST API (application/json)
 
