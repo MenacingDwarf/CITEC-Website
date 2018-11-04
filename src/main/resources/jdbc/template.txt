@@ -1,16 +1,24 @@
-SELECT t.id, t.date
+SELECT
+    t.id,
+    t.timestamp,
+    metrics.type,
+    metrics.value
 
 FROM
 (
-    SELECT id, date, project_name, ROW_NUMBER() OVER (ORDER BY date DESC) - 1 AS rownum
+    SELECT
+        id,
+        timestamp,
+        project_id,
+        ROW_NUMBER() OVER (ORDER BY timestamp DESC) - 1 AS rownum
+
     FROM groups
-    WHERE
-        project_name = 'project0'
-    AND
-        date >= '2010-11-16 10:36:22'
-    AND
-        date <= '2010-11-16 10:54:00'
+
+    WHERE project_id = ? AND timestamp >= ? AND timestamp <= ?
 
 ) AS t
 
-WHERE t.rownum % 2 = 0
+INNER JOIN metrics ON t.id = metrics.group_id
+
+WHERE t.rownum % ? = 0;
+

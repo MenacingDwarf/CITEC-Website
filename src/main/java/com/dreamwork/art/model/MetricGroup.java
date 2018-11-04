@@ -5,13 +5,23 @@ import lombok.NonNull;
 import lombok.Setter;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
-@Getter
-@Setter
 public class MetricGroup {
     @NonNull
-    private Timestamp timestamp;
+    @Getter
+    private final Timestamp timestamp;
     @NonNull
-    private List<Metric> metrics;
+    @Getter
+    private final List<Metric> metrics;
+
+    public MetricGroup(Timestamp timestamp) {
+        this.timestamp = timestamp;
+        this.metrics = new ArrayList<>();
+    }
+
+    public void addMetric(Metric metric) {
+        this.metrics.add(metric);
+    }
 }

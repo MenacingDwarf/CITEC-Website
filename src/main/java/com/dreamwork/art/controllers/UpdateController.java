@@ -32,11 +32,11 @@ public class UpdateController {
 
     @Scheduled(fixedDelay = 60000)
     public void updateMetrics() {
-        List<String> ids = projectRepo.findAllNodeIds();
+//        List<String> ids = projectRepo.findAllNodeIds();
 
-        GraphQLRequest request = new GraphQLRequest();
-        request.setQuery(query);
-        request.addVariable("ids", ids);
+   //     GraphQLRequest request = new GraphQLRequest();
+    //    request.setQuery(query);
+     //   request.addVariable("ids", ids);
 
         /*
         ResponseEntity response = rest.exchange(

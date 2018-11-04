@@ -5,10 +5,9 @@ import lombok.*;
 @Getter
 @Setter
 @RequiredArgsConstructor
-@NoArgsConstructor
 public class Metric {
     @NonNull
-    private MetricType type;
-    @NonNull
-    private Float value;
+    private final String type;
+
+    private final float value;
 }
