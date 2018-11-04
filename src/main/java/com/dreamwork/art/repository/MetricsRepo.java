@@ -16,6 +16,6 @@ public class MetricsRepo {
     }
 
     public List<MetricGroup> findMetricGroups(long projectId, Timestamp from, Timestamp until, int n) {
-        
+
     }
 }
