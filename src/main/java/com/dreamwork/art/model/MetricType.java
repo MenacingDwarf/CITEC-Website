@@ -8,7 +8,6 @@ import lombok.*;
 @NoArgsConstructor
 public class MetricType {
     private Long id;
-
     @NonNull
     private String name;
 }

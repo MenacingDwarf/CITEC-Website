@@ -2,17 +2,27 @@ package com.dreamwork.art.model;
 
 import lombok.*;
 
+import java.util.List;
+
 @Getter
 @Setter
-@RequiredArgsConstructor
 @NoArgsConstructor
 public class Project {
-    @NonNull
-    private String name;
-
-    @NonNull
-    private String githubRepo;
-
+    private Long id;
     @NonNull
     private String node_id;
+    @NonNull
+    private String name;
+    @NonNull
+    private String client;
+    @NonNull
+    private String status;
+    @NonNull
+    private String description;
+    @NonNull
+    private String githubRepo;
+    @NonNull
+    private List<String> tags;
+    @NonNull
+    private List<MetricGroup> groups;
 }

@@ -29,7 +29,6 @@ public class ProjectRepo {
             Project project = new Project();
             project.setName(result.getString("name"));
             project.setGithubRepo(result.getString("githubRepo"));
-            project.setNode_id(result.getString("node_id"));
             return project;
         });
     }

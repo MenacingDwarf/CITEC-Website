@@ -38,7 +38,7 @@ public class ProjectController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public List<Project> getProjects(@RequestParam int limit, @RequestParam int offset) {
+    public List<Project> getProjects(@RequestParam int limit, @RequestParam int offset, @RequestParam int interval) {
         return repo.findProjects(limit, offset);
     }
 
@@ -56,8 +56,8 @@ public class ProjectController {
 
         String node_id = (String)response.getBody().get("node_id");
 
-        Project project = new Project(dto.getName(), dto.getGithubRepo(), node_id);
+       // Project project = new Project(dto.getName(), dto.getGithubRepo(), node_id);
 
-        repo.save(project);
+       // repo.save(project);
     }
 }

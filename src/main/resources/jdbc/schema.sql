@@ -10,7 +10,7 @@ CREATE TABLE projects (
 CREATE TABLE groups (
   id BIGINT NOT NULL AUTO_INCREMENT,
   project_id BIGINT NOT NULL,
-  formed_at VARCHAR(255),
+  timestamp TIMESTAMP,
 
   PRIMARY KEY (id),
   CONSTRAINT fk_project FOREIGN KEY (project_id) REFERENCES projects(id)

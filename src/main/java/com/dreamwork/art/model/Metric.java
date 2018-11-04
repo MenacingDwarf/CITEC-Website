@@ -9,7 +9,6 @@ import lombok.*;
 public class Metric {
     @NonNull
     private MetricType type;
-
     @NonNull
     private Float value;
 }

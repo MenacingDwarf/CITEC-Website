@@ -1,0 +1,16 @@
+SELECT t.id, t.date
+
+FROM
+(
+    SELECT id, date, project_name, ROW_NUMBER() OVER (ORDER BY date DESC) - 1 AS rownum
+    FROM groups
+    WHERE
+        project_name = 'project0'
+    AND
+        date >= '2010-11-16 10:36:22'
+    AND
+        date <= '2010-11-16 10:54:00'
+
+) AS t
+
+WHERE t.rownum % 2 = 0
