@@ -1,63 +1,104 @@
 package com.dreamwork.art.repository;
 
 import com.dreamwork.art.model.MetricGroup;
-import com.dreamwork.art.model.Project;
+import com.dreamwork.art.payload.ListedProject;
+import com.dreamwork.art.payload.ProjectsInfo;
+import com.dreamwork.art.tools.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StreamUtils;
 
+import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.*;
 
 @Component
 public class ProjectRepo {
     private JdbcTemplate jdbc;
-    private SimpleJdbcInsert insertCmd;
+
+    private final String selectCmd;
+    private final String projectsInfoCmd;
 
     @Autowired
-    public ProjectRepo(JdbcTemplate jdbc) {
+    public ProjectRepo(JdbcTemplate jdbc) throws IOException {
         this.jdbc = jdbc;
-        this.insertCmd = new SimpleJdbcInsert(jdbc)
-                .withTableName("projects")
-                .usingGeneratedKeyColumns("id");
+        //this.insertCmd = new SimpleJdbcInsert(jdbc)
+        //        .withTableName("projects")
+        //        .usingGeneratedKeyColumns("id");
+
+        this.selectCmd = StreamUtils.copyToString(new ClassPathResource("jdbc/projects/list_all.sql").getInputStream(), Charset.defaultCharset());
+        this.projectsInfoCmd = StreamUtils.copyToString(new ClassPathResource("jdbc/projects/info.sql").getInputStream(), Charset.defaultCharset());
     }
 
-    public List<Project> findProjects(int limit, int offset) {
-        String cmd = "SELECT * FROM projects LIMIT " + limit + " OFFSET " + offset;
+    public List<ListedProject> find(int limit, int offset) {
+        return jdbc.query(
+                this.selectCmd,
 
-        return jdbc.query(cmd, (result, i) -> {
-            Project project = new Project();
-            project.setName(result.getString("name"));
-            project.setGithubRepo(result.getString("githubRepo"));
-            return project;
-        });
+                statement -> {
+                    statement.setInt(1, limit);
+                    statement.setInt(2, offset);
+                },
+
+                (rs, i) -> {
+                    ListedProject project = new ListedProject();
+                    project.setId(rs.getLong("id"));
+                    project.setName(rs.getString("name"));
+                    project.setClient(rs.getString("client"));
+                    project.setStatus(rs.getString("status"));
+                    project.setDescription(rs.getString("description"));
+                    project.setGithubRepo(rs.getString("githubRepo"));
+                    project.setStartedAt(rs.getTimestamp("startedAt"));
+                    project.setClosedAt(rs.getTimestamp("closedAt"));
+                    return project;
+                }
+        );
     }
 
-    public int totalNumberOfProjects() {
-        String cmd = "SELECT COUNT(*) FROM projects";
+    public List<Pair<Long, String>> findUntrackedByGithub() {
+        final String cmd = "SELECT id, githubRepo FROM projects WHERE github_node_id IS NULL";
 
-        List<Integer> res = jdbc.query(cmd, (result, i) -> result.getInt(1));
+        return jdbc.query(
+                cmd,
+                (rs, i) -> {
+                    Pair<Long, String> p = new Pair<>();
+                    p.setFirst(rs.getLong(1));
+                    p.setSecond(rs.getString(2));
+                    return p;
+                }
+        );
+    }
 
-        return res.get(0);
+    public List<Pair<Long, String>> findGithubNodes() {
+        final String cmd = "SELECT id, github_node_id FROM projects";
+
+        return jdbc.query(
+                cmd,
+                (rs, i) -> {
+                    Pair<Long, String> p = new Pair<>();
+                    p.setFirst(rs.getLong(1));
+                    p.setSecond(rs.getString(2));
+                    return p;
+                }
+        );
+    }
+
+    public ProjectsInfo info() {
+        return jdbc.query(
+                this.projectsInfoCmd,
+
+                rs -> {
+                    rs.next();
+                    ProjectsInfo info = new ProjectsInfo();
+                    info.setTotal(rs.getInt("total"));
+                    info.setActive(rs.getInt("active"));
+                    return info;
+                }
+        );
     }
 
     public void batchAddGroup(List<MetricGroup> groups) {
        // jdbc.batchUpdate()
-    }
-
-    public List<String> findAllNodeIds() {
-        String cmd = "SELECT node_id FROM projects";
-
-        return jdbc.query(cmd, (result, i) -> result.getString("node_id"));
-    }
-
-
-    public void save(Project project) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("name", project.getName());
-        params.put("githubRepo", project.getGithubRepo());
-        params.put("node_id", project.getNode_id());
-
-        this.insertCmd.execute(params);
     }
 }

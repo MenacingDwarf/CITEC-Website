@@ -1,18 +1,17 @@
-package com.dreamwork.art.model;
+package com.dreamwork.art.payload;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.Setter;
 
-import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
-import java.util.List;
 
 @Getter
 @Setter
 @NoArgsConstructor
-public class Project {
+public class ListedProject {
     private Long id;
-    @NonNull
-    private String node_id;
     @NonNull
     private String name;
     @NonNull
@@ -25,4 +24,6 @@ public class Project {
     private String githubRepo;
     @NonNull
     private Timestamp startedAt;
+
+    private Timestamp closedAt;
 }

@@ -9,4 +9,5 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ProjectsInfo {
     private Integer total;
+    private Integer active;
 }

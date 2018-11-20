@@ -4,17 +4,12 @@ import com.dreamwork.art.model.Metric;
 import com.dreamwork.art.model.MetricGroup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.ResultSetExtractor;
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StreamUtils;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +25,7 @@ public class MetricsRepo {
         this.cmd = StreamUtils.copyToString(new ClassPathResource("jdbc/template.txt").getInputStream(), Charset.defaultCharset());
     }
 
-    public List<MetricGroup> findMetricGroups(long projectId, Timestamp from, Timestamp until, int n) {
+    public List<MetricGroup> find(long projectId, Timestamp from, Timestamp until, int n) {
         return jdbc.query(
                 cmd,
 

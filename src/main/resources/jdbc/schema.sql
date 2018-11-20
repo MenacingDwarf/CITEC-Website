@@ -1,27 +1,30 @@
 CREATE TABLE projects
 (
   id BIGINT AUTO_INCREMENT,
-  name VARCHAR(255),
+  github_node_id VARCHAR(127),
+  name VARCHAR(127),
+  client VARCHAR(255),
+  status VARCHAR(127),
+  description VARCHAR(4095),
+  githubRepo VARCHAR(255),
+  startedAt TIMESTAMP,
+  closedAt TIMESTAMP,
 
-  PRIMARY KEY (id)
+  PRIMARY KEY(id)
 );
 
 CREATE TABLE groups
 (
-  id BIGINT AUTO_INCREMENT,
-  project_id BIGINT NOT NULL,
+  id BIGINT AUTO_INCREMENT PRIMARY KEY ,
+  project_id BIGINT REFERENCES projects(id),
   timestamp TIMESTAMP,
-
-  PRIMARY KEY (id),
-  CONSTRAINT fk_project FOREIGN KEY (project_id) REFERENCES projects(id)
 );
 
 CREATE TABLE metrics
 (
-  group_id BIGINT NOT NULL,
+  group_id BIGINT REFERENCES groups(id),
   type VARCHAR(255),
   value FLOAT,
 
   CONSTRAINT pk_metric PRIMARY KEY(group_id, type),
-  CONSTRAINT fk_group FOREIGN KEY (group_id) REFERENCES groups(id)
 );

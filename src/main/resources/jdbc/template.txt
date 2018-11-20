@@ -21,4 +21,3 @@ FROM
 INNER JOIN metrics ON t.id = metrics.group_id
 
 WHERE t.rownum % ? = 0;
-

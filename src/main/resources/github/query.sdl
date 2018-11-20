@@ -1,0 +1,16 @@
+query($ids: [ID!]!) {
+    rateLimit {
+        cost
+        remaining
+        resetAt
+    }
+
+    nodes(ids: $ids) {
+        ... on Repository {
+            name
+            description
+            createdAt
+            updatedAt
+        }
+    }
+}
