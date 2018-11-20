@@ -1,0 +1,421 @@
+body {
+    font-family: 'Roboto', sans-serif;
+}
+
+.page-header {
+    position: relative;
+    z-index: 5;
+    
+    min-height: 20px;
+    padding: 20px;
+    padding-bottom: 0px;
+}
+
+nav {
+    width: 660px;
+    margin: 0 auto 10px;
+}
+
+ul {
+    list-style: none; 
+    margin: 0;
+    padding: 0;
+}
+
+li {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.topmenu > li {
+    display: inline-block;
+    margin-right: 20px;
+    position: relative;
+}
+
+.topmenu > li:last-child {
+    margin-right: 0;
+}
+
+a {
+    display: block;
+    padding: 10px 10px;
+    text-decoration: none;
+    outline: none;
+    font-size: 30px;
+    transition: .5s linear;
+}
+
+.fa {
+    font-family: "FontAwesome";
+    color: inherit;
+    padding-left: 10px;
+}
+
+.submenu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    z-index: 10;
+    -webkit-transition: 0.5s ease-in-out;
+    -moz-transition: 0.5s ease-in-out;
+    -o-transition: 0.5s ease-in-out;
+    transition: 0.5s ease-in-out;
+}
+
+.nav ul a {
+    color: black;
+}
+.nav .submenu {
+    display: none;
+}
+.nav ul li:hover .submenu {
+    background-color: #eaeaea;
+    display: block;
+}
+
+.nav li:hover {
+    background-color: #d7d7d7;
+}
+
+.submenu li a {
+    padding-left: 0px;
+    padding-right: 0px;
+    font-size: 15px;
+    border-bottom: 1px solid rgba(255,255,255,.3);
+}
+
+.find {
+    position: absolute;
+    height: 20px;
+    font-size: 20px;
+    width: 250px;
+    right: 110px;
+    top: 33px;
+    border-top: 2px solid #666666;
+}
+
+.find-button{
+    width: 25px;
+    position: absolute;
+    top: 33px;
+    right: 80px;
+}
+
+.current-projects {
+    background-color: #6E8894;
+    font-size: 50px;
+    text-align: left;
+    padding: 30px 0px 30px 250px;
+    font-family: "Arial", serif;
+    color: white;
+}
+
+.list-of-projects {
+    float: left;
+    margin-left: 200px;
+    width: 47%;
+    color: black;
+/*    border: 1px solid black;*/
+    min-height: 200px;
+    margin-bottom: 30px;
+}
+
+.project-box {
+    padding-top: 10px;
+    padding-left: 20px;
+    margin-bottom: 40px;
+    border: 1px solid black;
+}
+
+.tags {
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+.topmenu-tags .others {
+    text-align: center;
+    padding-left: 50px;
+    padding-right: 50px;
+}
+
+.tags li {
+    display: inline-block;
+    margin-bottom: 10px;
+    padding: 5px 10px;
+    text-decoration: none;
+    outline: none;
+    border: 1px solid black;
+    border-radius: 5px;
+}
+
+.tags li {
+    background-color: #48C7E3;
+}
+
+.tags li:first-of-type {
+    background-color: #85FFC7;
+}
+
+.tags li:nth-of-type(2n) {
+    background-color: #85BAA1;
+}
+
+.topmenu-tags > li {
+    display: inline-block;
+    margin-right: 5px;
+    position: relative;
+}
+    
+
+.topmenu-tags > li:last-child {
+    margin-right: 0;
+}
+
+.submenu-tags {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    z-index: 10;
+    -webkit-transition: 0.5s ease-in-out;
+    -moz-transition: 0.5s ease-in-out;
+    -o-transition: 0.5s ease-in-out;
+    transition: 0.5s ease-in-out;
+}
+
+.tags .submenu-tags li {
+    margin-right: 5px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: auto;
+}
+
+.tags .submenu-tags {
+    display: none;
+}
+.tags ul li:hover .submenu-tags {
+    display: block;
+}
+
+.title {
+    border: 1px solid red;
+    display: flex;
+    float: left;
+    width: 60%;
+    font-size: 25px;
+    font-weight: bold;
+    min-height: 65px;
+    margin-bottom: 20px;
+}
+
+.title-box {
+    border: 1px dashed black;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+main .on-project-page{
+    width: 25%;
+    margin-top: 10px;
+    text-align: center;
+    padding-bottom: 15px;
+    padding-top: 15px;
+    margin-right: 10px;
+    float: right;
+    color: black;
+    font-size: 15px;
+    border: 1px solid black;
+    border-radius: 5px;
+}
+
+main .on-project-page:hover{
+    background-color: #F76F8E;
+}
+
+main .short-description {
+    padding-right: 5px;
+    padding-top: 10px;
+    font-size: 18px;
+    color: black;
+}
+
+.foo {
+    clear: both;
+    margin-right: 10px;
+    margin-top: 10px;
+    line-height: 25px;
+    text-align: center;
+    border: 1px solid black;
+    padding-left: auto;
+    padding-right: auto;
+}
+
+.message {
+    font-size: 20px;
+    display: none;
+}
+
+.help-bar {
+    width: 20%;
+    float: left;
+    margin-left: 120px;
+    height: auto;
+    margin-bottom: 30px;
+}
+
+.help-bar .selected-tags {
+    height: auto;
+    border: 1px solid black;
+    padding-left: 20px;
+    margin-bottom: 20px;
+}
+
+.reset {
+    font-size: 15px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    outline: none;
+    display: none;
+}
+
+.reset:active {
+    border-radius: 10px;
+}
+
+.help-bar .selected-tags .tags-name {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    text-align: left;
+    font-weight: bold;
+    font-size: 25px;
+}
+
+.help-bar .selected-tags .pressed {
+    display: inline-block;
+    font-size: 15px;
+    margin-right: 20px;
+    margin-bottom: 10px;
+    padding: 5px 10px 5px 10px;
+    border: 1px solid black;
+    border-radius: 5px;
+    outline: none;
+}
+
+.help-bar .selected-tags .pressed:active {
+    border-radius: 10px;
+}
+
+.search-project {
+    border: 1px solid black;
+    padding: 17px;
+    align-content: center;
+}
+
+.search {
+    font-size: 20px;
+    width: 220px;
+}
+
+.search-button {
+    width: 30px;
+/*    outline: none;*/
+    position: absolute;
+}
+
+.type-of-tags {
+    border: 1px solid black;
+    height: auto;
+    border-top: none;
+}
+
+.status-bar {
+    margin-top: -25px;
+    height: 25px;
+    /*border: 0px solid black;*/
+    padding-left: auto;
+    padding-right: auto;
+    background-color: #33cc33;
+}
+
+.type-of-tags ul{
+    padding: 15px 0px 10px 15px;
+}
+
+.type-of-tags li{
+    padding-bottom: 10px;
+}
+
+.first-type-of-tags li button {
+    padding: 5px 15px 5px 15px;
+    background-color: #90cfeb;
+    border-radius: 5px;
+    font-size: 15px;
+}
+
+.second-type-of-tags li button {
+    padding: 5px 15px 5px 15px;
+    border-radius: 5px;
+    font-size: 15px;
+}
+
+.type-of-tags button {
+    outline: none;
+}
+
+.second-type-of-tags li:first-of-type button {
+    background-color: #85ff85;
+}
+
+.second-type-of-tags li:nth-of-type(2) button {
+    background-color: yellow;
+}
+
+.second-type-of-tags li:last-of-type button {
+    background-color: #ff8585;
+}
+
+.third-type-of-tags li button {
+    padding: 5px 15px 5px 15px;
+    border-radius: 5px;
+    font-size: 15px;
+}
+
+.type-of-tags button:active{
+    border-radius: 10px;
+}
+
+.page-footer {
+    clear: both;
+    min-height: 20px;
+    padding: 5px;
+    font-size: 17px;
+    color: white;
+    background-color: #6E8894;
+}
+
+.page-footer::after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.page-footer .title-footer {
+    font-weight: bold; 
+}
+
+.page-footer .info {
+    padding-top: 0px;
+    padding-left: 45px;
+    float: left;
+}
+
+.page-footer .contacts {
+    float: right;
+    text-align: right;
+    line-height: 27px;
+    padding-top: 0px;
+    padding-right: 10px;
+    font-size: 17px;
+}

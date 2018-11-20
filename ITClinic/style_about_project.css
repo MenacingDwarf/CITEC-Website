@@ -1,0 +1,287 @@
+body {
+    font-family: 'Roboto', sans-serif;
+}
+
+.page-header {
+    position: relative;
+    z-index: 5;
+    
+    min-height: 20px;
+    padding: 20px;
+    padding-bottom: 0px;
+}
+
+nav {
+    width: 660px;
+    margin: 0 auto 10px;
+}
+
+ul {
+    list-style: none; 
+    margin: 0;
+    padding: 0;
+}
+
+li {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.topmenu > li {
+    display: inline-block;
+    margin-right: 20px;
+    position: relative;
+}
+
+.topmenu > li:last-child {
+    margin-right: 0;
+}
+
+.page-header a {
+    display: block;
+    padding: 10px 10px;
+    text-decoration: none;
+    outline: none;
+    font-size: 30px;
+    transition: .5s linear;
+}
+
+.fa {
+    font-family: "FontAwesome";
+    color: inherit;
+    padding-left: 10px;
+}
+
+.submenu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    z-index: 10;
+    -webkit-transition: 0.5s ease-in-out;
+    -moz-transition: 0.5s ease-in-out;
+    -o-transition: 0.5s ease-in-out;
+    transition: 0.5s ease-in-out;
+}
+
+.nav ul a {
+    color: black;
+}
+.nav .submenu {
+    display: none;
+}
+.nav ul li:hover .submenu {
+    background-color: #eaeaea;
+    display: block;
+}
+
+.nav li:hover {
+    background-color: #d7d7d7;
+}
+
+.submenu li a {
+    padding-left: 0px;
+    padding-right: 0px;
+    font-size: 15px;
+    border-bottom: 1px solid rgba(255,255,255,.3);
+}
+
+.find {
+    position: absolute;
+    height: 20px;
+    font-size: 20px;
+    width: 250px;
+    right: 110px;
+    top: 33px;
+    border-top: 2px solid #666666;
+}
+
+.find-button {
+    width: 25px;
+    position: absolute;
+    top: 33px;
+    right: 80px;
+}
+
+.gray-line {
+    margin-top: 35px;
+    height: 115px;
+    background-color: #6E8894;
+}
+
+
+.project-description {
+    margin-top: 30px;
+    margin-left: 130px;
+    float: left;
+    width: 50%;
+    border: 1px solid black;
+    height: auto;
+    margin-bottom: 30px;
+}
+
+.project-description .title-of-project {
+/*    padding: 20px 20px 10px 115px;*/
+    font-weight: bold;
+    text-align: left;
+    font-size: 30px;
+}
+
+.customer-link {
+    margin-top: 20px;
+    outline: none;
+/*    padding-left: 115px;*/
+    font-size: 15px;
+    color: black;
+    display: block;
+    text-decoration: none;
+}
+
+.project-description h2{
+    margin-top: 50px;
+/*    padding-left: 115px;*/
+}
+
+.description {
+/*    padding-left: 115px;*/
+    padding-bottom: 20px;
+    height: auto;
+    width: 90%;
+    
+}
+
+.github {
+    margin-top: 20px;
+}
+
+.github a {
+    outline: none;
+    text-decoration: none;
+}
+
+.about-project-bar {
+    margin-top: 30px;
+    float: left;
+    margin-left: 80px;
+    width: 25%;
+    border: 1px solid black;
+    margin-bottom: 30px;
+}
+
+.status-project {
+    padding: 20px;
+    padding-left: 30px;
+    border: 1px solid black;
+    font-size: 25px;
+    margin-bottom: 20px;
+}
+
+.status-project span {
+    color: #ffaa33;
+}
+
+.hard-level {
+    padding: 20px;
+    padding-left: 30px;
+    border: 1px solid black;
+    font-size: 25px;
+    margin-bottom: 20px;
+}
+
+.hard-level span {
+    color: limegreen;
+}
+
+.list-of-jobs {
+    padding: 10px;
+/*    padding-left: 30px;*/
+    border: 1px solid black;
+    margin-bottom: 20px;
+}
+
+.list-of-jobs h2 {
+    padding-left: 30px;
+    font-size: 25px;
+    padding-bottom: 30px;
+}
+
+.list-of-jobs ul {
+    padding-left: 30px;
+    margin-bottom: 40px;
+}
+
+
+.join-to-project {
+    width: 80%;
+    padding: 15px;
+    font-size: 15px;
+    border-radius: 10px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    
+}
+
+.join-to-project:hover {
+    background-color: darksalmon;
+}
+
+.box-of-tags {
+    height: 100px;
+    border: 1px solid black;
+}
+
+.box-of-tags .tags li{
+/*
+    padding-top: 20px;
+    margin-left: 30px;
+*/
+    margin-top: 10px;
+    margin-left: 20px;
+    display: inline-block;
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 5px 10px;
+}
+
+.box-of-tags span {
+    background-color: #90cfeb;
+    border-radius: 5px;
+    margin-right: 20px;
+    padding: 5px 10px;
+}
+
+.page-footer {
+    clear: both;
+    margin-top: 30px;
+    min-height: 20px;
+    padding: 5px;
+    font-size: 17px;
+    color: white;
+    background-color: #6E8894;
+}
+
+.page-footer::after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.page-footer .title-footer {
+    font-weight: bold; 
+}
+
+.page-footer .info {
+    padding-top: 0px;
+    padding-left: 45px;
+    float: left;
+}
+
+.page-footer .contacts {
+    float: right;
+    text-align: right;
+    line-height: 27px;
+    padding-top: 0px;
+    padding-right: 10px;
+    font-size: 17px;
+}
