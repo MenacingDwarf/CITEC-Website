@@ -7,10 +7,22 @@ query($ids: [ID!]!) {
 
     nodes(ids: $ids) {
         ... on Repository {
-            name
-            description
-            createdAt
-            updatedAt
+            milestones(last: 100) {
+                nodes {
+                    issues(last: 100) {
+                        nodes {
+                            closedAt
+                            closed
+                        }
+                    }
+
+                    state
+                    dueOn
+                    title
+                }
+            }
         }
     }
 }
+
+

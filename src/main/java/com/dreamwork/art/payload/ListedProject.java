@@ -1,15 +1,13 @@
 package com.dreamwork.art.payload;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.Setter;
+import lombok.*;
 
 import java.sql.Timestamp;
 
 @Getter
 @Setter
 @NoArgsConstructor
+@ToString
 public class ListedProject {
     private Long id;
     @NonNull

@@ -6,12 +6,15 @@ import com.dreamwork.art.payload.ProjectsInfo;
 import com.dreamwork.art.tools.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StreamUtils;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.*;
 
 @Component
@@ -70,17 +73,30 @@ public class ProjectRepo {
         );
     }
 
-    public List<Pair<Long, String>> findGithubNodes() {
-        final String cmd = "SELECT id, github_node_id FROM projects";
+    public void batchUpdateGithubNodes(List<Pair<Long, String>> nodes) {
+        final String cmd = "UPDATE projects SET github_node_id = ? WHERE id = ?";
+
+        jdbc.batchUpdate(cmd, new BatchPreparedStatementSetter() {
+            @Override
+            public void setValues(PreparedStatement ps, int i) throws SQLException {
+                Pair<Long, String> p = nodes.get(i);
+                ps.setString(1, p.getSecond());
+                ps.setLong(2, p.getFirst());
+            }
+
+            @Override
+            public int getBatchSize() {
+                return nodes.size();
+            }
+        });
+    }
+
+    public List<String> listGithubNodes() {
+        final String cmd = "SELECT github_node_id FROM projects";
 
         return jdbc.query(
                 cmd,
-                (rs, i) -> {
-                    Pair<Long, String> p = new Pair<>();
-                    p.setFirst(rs.getLong(1));
-                    p.setSecond(rs.getString(2));
-                    return p;
-                }
+                (rs, i) -> rs.getString(1)
         );
     }
 
