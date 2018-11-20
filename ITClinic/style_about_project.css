@@ -37,6 +37,26 @@ li {
     margin-right: 0;
 }
 
+.chart1.ct-chart .ct-series.ct-series-a .ct-line {
+    stroke: #F04D3A;
+    animation: dashoffset-seven 200ms infinite linear;
+}
+
+.chart1.ct-chart .ct-series.ct-series-a .ct-point{
+    stroke: #B22819;
+}
+ 
+/*Цвет, толщина и стиль второй линии*/
+.chart1.ct-chart .ct-series.ct-series-b .ct-line {
+    stroke: #4DB543;
+    animation: dashoffset 200ms infinite linear;
+}
+ 
+/*Цвет точек второй линии*/
+.chart1.ct-chart .ct-series.ct-series-b .ct-point{
+    stroke: #0FB500;
+}
+
 .page-header a {
     display: block;
     padding: 10px 10px;
@@ -115,13 +135,11 @@ li {
     margin-left: 130px;
     float: left;
     width: 50%;
-    border: 1px solid black;
     height: auto;
     margin-bottom: 30px;
 }
 
 .project-description .title-of-project {
-/*    padding: 20px 20px 10px 115px;*/
     font-weight: bold;
     text-align: left;
     font-size: 30px;
@@ -130,7 +148,6 @@ li {
 .customer-link {
     margin-top: 20px;
     outline: none;
-/*    padding-left: 115px;*/
     font-size: 15px;
     color: black;
     display: block;
@@ -139,15 +156,24 @@ li {
 
 .project-description h2{
     margin-top: 50px;
-/*    padding-left: 115px;*/
 }
 
 .description {
-/*    padding-left: 115px;*/
     padding-bottom: 20px;
     height: auto;
     width: 90%;
     
+}
+
+.graphic {
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.img {
+    width: 100%;
+    margin-right: auto;
+    margin-left: auto;
 }
 
 .github {
@@ -164,7 +190,6 @@ li {
     float: left;
     margin-left: 80px;
     width: 25%;
-    border: 1px solid black;
     margin-bottom: 30px;
 }
 
@@ -176,9 +201,22 @@ li {
     margin-bottom: 20px;
 }
 
-.status-project span {
-    color: #ffaa33;
+.finished {
+    font-size: 25px;
+    font-weight: bold;
+    color: #33d433;
 }
+
+.in-proccess {
+    color: #ffaa33;
+    font-weight: bold;
+}
+
+.in-future {
+    color: #ff3333;
+    font-weight: bold;
+}
+
 
 .hard-level {
     padding: 20px;
@@ -188,8 +226,16 @@ li {
     margin-bottom: 20px;
 }
 
-.hard-level span {
+.easy {
     color: limegreen;
+}
+
+.medium {
+    color: darkgoldenrod;
+}
+
+.hard {
+    color: #ff8585;
 }
 
 .list-of-jobs {
@@ -227,21 +273,26 @@ li {
 }
 
 .box-of-tags {
-    height: 100px;
+    height: auto;
     border: 1px solid black;
 }
 
 .box-of-tags .tags li{
-/*
-    padding-top: 20px;
-    margin-left: 30px;
-*/
     margin-top: 10px;
+    margin-bottom: 10px;
     margin-left: 20px;
     display: inline-block;
     border: 1px solid black;
     border-radius: 5px;
     padding: 5px 10px;
+}
+
+.box-of-tags .tags li:nth-of-type(2n) {
+    background-color: #ff8585;
+}
+
+.box-of-tags .tags li:nth-of-type(odd) {
+    background-color: darkturquoise;
 }
 
 .box-of-tags span {

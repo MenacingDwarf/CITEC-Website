@@ -5,6 +5,8 @@
         <link rel="stylesheet" href="style_about_project.css">
         <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
         <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
+        <script src="https://cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
         <title>О проекте</title>
     </head>
     <body>
@@ -37,48 +39,30 @@
        <main>
             <div class="gray-line"></div>
             <div class="project-description">
-               <div class="title-of-project">WEB-приложения для аграрного предприятия</div>
-               <div><a href="#"  class="customer-link"><em>Заказчик:</em> ООО "Вупсень и Пупсень"</a></div>
-               <h2>О проекте:</h2>
-               <p class="description">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsum quia explicabo quidem nesciunt non ipsam sit asperiores laudantium mollitia officia. Assumenda temporibus ab ducimus, nostrum officiis sequi. Magni ex, reiciendis.</p>
-               <div class="graphic" style="text-align: center">
-                   ТУТ БУДЕТ ГРАФИК
-                   <img src="images/q04319KqOfs.jpg" alt="">
-               </div>
-               <div class="github">
-                   Github:
-                   <a href="">хттп.гитхуб.ком/Стас/ЦИТИК</a>
-               </div>
+                <div class="ct-chart ct-golden-section chart1"></div>
             </div>
                
            <div class="about-project-bar">
                <div class="status-project">
-                   <b>Статус: <span>В процессе</span></b>
+                   <b>Статус: </b>
+                   <span id="status"></span>
                </div>
                <div class="hard-level">
-                   <b>Сложность: <span>Низкая</span></b>
+                   <b>Сложность: <span id="level"></span></b>
                </div>
                <div class="list-of-jobs">
                    <h2>Вакансии:</h2>
-                   <ul class="list">
-                       <li>- Back-end разработчик</li>
-                       <li>- Front-end разработчик</li>
-                       <li>- Дизайнер</li>
-                       <li>- Смотритель сериалов</li>
-                       <li>- Аналитик</li>
-                   </ul>
+                   <ul class="list"></ul>
+                   
                    <div class="join-button">
                        <button class="join-to-project">Присоединиться к проекту</button>
                    </div>
                </div>
                <div class="box-of-tags">
-                  <ul class="tags">
-                       <li>WEB</li>
-                       <li>TAG1</li>
-                       <li>TAG2</li>
-                   </ul>
+                  <ul class="tags"></ul>
                </div>
            </div>
+           <script src="about_project_script.js"></script>  
        </main>
        
        <footer class="page-footer">
