@@ -60,7 +60,7 @@ public class ProjectRepo {
     }
 
     public List<Pair<Long, String>> findUntrackedByGithub() {
-        final String cmd = "SELECT id, githubRepo FROM projects WHERE github_node_id IS NULL";
+        final String cmd = "SELECT id, githubRepo FROM projects WHERE githubNodeId IS NULL";
 
         return jdbc.query(
                 cmd,
@@ -74,7 +74,7 @@ public class ProjectRepo {
     }
 
     public void batchUpdateGithubNodes(List<Pair<Long, String>> nodes) {
-        final String cmd = "UPDATE projects SET github_node_id = ? WHERE id = ?";
+        final String cmd = "UPDATE projects SET githubNodeId = ? WHERE id = ?";
 
         jdbc.batchUpdate(cmd, new BatchPreparedStatementSetter() {
             @Override
@@ -91,8 +91,8 @@ public class ProjectRepo {
         });
     }
 
-    public List<String> listGithubNodes() {
-        final String cmd = "SELECT github_node_id FROM projects";
+    public List<String> listActiveGithubNodes() {
+        final String cmd = "SELECT githubNodeId FROM projects WHERE status='active'";
 
         return jdbc.query(
                 cmd,
@@ -112,9 +112,5 @@ public class ProjectRepo {
                     return info;
                 }
         );
-    }
-
-    public void batchAddGroup(List<MetricGroup> groups) {
-       // jdbc.batchUpdate()
     }
 }

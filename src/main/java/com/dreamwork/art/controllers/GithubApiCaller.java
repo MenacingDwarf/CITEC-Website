@@ -2,10 +2,12 @@ package com.dreamwork.art.controllers;
 
 import com.dreamwork.art.model.MetricGroup;
 import com.dreamwork.art.payload.GraphQLRequest;
+import com.dreamwork.art.repository.MetricsRepo;
 import com.dreamwork.art.repository.ProjectRepo;
 import com.dreamwork.art.service.MetricsConverter;
 import com.dreamwork.art.tools.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -29,38 +31,42 @@ public class GithubApiCaller {
 
     private RestTemplate rest;
     private ProjectRepo projectRepo;
+    private MetricsRepo metricsRepo;
     private MetricsConverter converter;
 
     @Autowired
-    public GithubApiCaller(RestTemplate rest, ProjectRepo projectRepo, MetricsConverter converter) throws IOException {
+    public GithubApiCaller(RestTemplate rest, ProjectRepo projectRepo, MetricsRepo metricsRepo, MetricsConverter converter) throws IOException {
         this.rest = rest;
         this.projectRepo = projectRepo;
+        this.metricsRepo = metricsRepo;
         this.converter = converter;
 
         this.authHeader = new HttpHeaders();
-        this.authHeader.set(HttpHeaders.AUTHORIZATION, "Bearer 193a2d7d2179e598ce60be4f9f642685781bb2e9");
+        this.authHeader.set(HttpHeaders.AUTHORIZATION, "Bearer 510cbac79217532b1a2014185b7a173999fab71d");
 
         this.query = StreamUtils.copyToString(new ClassPathResource("github/query.sdl").getInputStream(), Charset.defaultCharset());
     }
 
-    @Scheduled(fixedDelay = 15000)
+    @Scheduled(fixedDelayString = "${githubapi.update}")
     public void update() {
         updateRepos();
 
+        List<String> activeNodes = projectRepo.listActiveGithubNodes();
+
         GraphQLRequest request = new GraphQLRequest();
         request.setQuery(query);
-        request.addVariable("ids", projectRepo.listGithubNodes());
+        request.addVariable("ids", activeNodes);
 
-        ResponseEntity<String> response = rest.exchange(
+        ResponseEntity<LinkedHashMap> response = rest.exchange(
                 GRAPHQL_API_URL,
                 HttpMethod.POST,
                 new HttpEntity<>(request, authHeader),
-                String.class
+                LinkedHashMap.class
         );
 
-        System.out.println(response.getBody());
+        List<MetricGroup> groups = this.converter.convert(response.getBody());
 
-        //List<MetricGroup> groups = this.converter.convert(response.getBody());
+        metricsRepo.batchInsert(groups);
     }
 
     private void updateRepos() {

@@ -7,7 +7,6 @@ import java.sql.Timestamp;
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString
 public class ListedProject {
     private Long id;
     @NonNull

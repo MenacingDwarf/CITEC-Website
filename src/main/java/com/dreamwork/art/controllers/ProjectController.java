@@ -12,26 +12,19 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/projects")
 public class ProjectController {
-    // TODO:
-    /*
-    String url = "https://api.github.com/repos/";
-    String token = "Bearer 23ba5f53bb83329b15a9d9b2264201b4bf38ca4d";
-    HttpEntity<String> entity;
-    */
-
     private ProjectRepo repo;
 
     @Autowired
     public ProjectController(ProjectRepo repo) {
         this.repo = repo;
-
-       // HttpHeaders headers = new HttpHeaders();
-       // headers.set(HttpHeaders.AUTHORIZATION, token);
-       // entity = new HttpEntity<>(headers);
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public List<ListedProject> getProjectList(@RequestParam int limit, @RequestParam int offset, @RequestParam(value = "tags") Optional<List<String>> tags) {
+    public List<ListedProject> getProjectList(
+            @RequestParam int limit,
+            @RequestParam int offset,
+            @RequestParam(value = "tags") Optional<List<String>> tags) {
+
         if (tags.isPresent()) {
             // TODO
         }
