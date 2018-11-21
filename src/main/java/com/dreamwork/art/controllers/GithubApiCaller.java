@@ -24,8 +24,9 @@ import java.util.*;
 
 @Component
 public class GithubApiCaller {
-    private final String REPOSITORIES_API_URL = "https://api.github.com/repos/";
-    private final String GRAPHQL_API_URL = "https://api.github.com/graphql";
+    @Value("${githubapi.reposURL}") private String REPOSITORIES_API_URL;
+    @Value("${githubapi.graphql}") private String GRAPHQL_API_URL;
+
     private final HttpHeaders authHeader;
     private final String query;
 
@@ -35,14 +36,20 @@ public class GithubApiCaller {
     private MetricsConverter converter;
 
     @Autowired
-    public GithubApiCaller(RestTemplate rest, ProjectRepo projectRepo, MetricsRepo metricsRepo, MetricsConverter converter) throws IOException {
+    public GithubApiCaller(
+            RestTemplate rest,
+            ProjectRepo projectRepo,
+            MetricsRepo metricsRepo,
+            MetricsConverter converter,
+            @Value("${githubapi.accesstoken}") String token) throws IOException {
+
         this.rest = rest;
         this.projectRepo = projectRepo;
         this.metricsRepo = metricsRepo;
         this.converter = converter;
 
         this.authHeader = new HttpHeaders();
-        this.authHeader.set(HttpHeaders.AUTHORIZATION, "Bearer 510cbac79217532b1a2014185b7a173999fab71d");
+        this.authHeader.set(HttpHeaders.AUTHORIZATION, "Bearer " + token);
 
         this.query = StreamUtils.copyToString(new ClassPathResource("github/query.sdl").getInputStream(), Charset.defaultCharset());
     }
