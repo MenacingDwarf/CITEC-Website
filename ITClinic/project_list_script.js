@@ -12,6 +12,12 @@ var projects = [{
   array_li: ['Анализ данных', 'Низкая сложность', 'Тег 2', 'Еще один тег', '...'],
   array_li_sublist: ['tag1', 'tag2', 'tag23']
 }, {
+  title: 'Шифр Цезаря',
+  status_bar: 23,
+  description: 'Зашифровать Брута салатом Цезарь.',
+  array_li: ['Python', 'Средняя сложность', 'Machine Learning', 'Еще один тег', '...'],
+  array_li_sublist: ['tag1', 'tag2', 'tag23']
+},{
   title: 'Вёрстка ленты Мёбиуса',
   status_bar: 88,
   description: 'Лента Мёбиуса - пример неориентируемой односторонней поверхности с одним краем в обычном трёхмерном Евклидовом пространстве.',
@@ -21,13 +27,13 @@ var projects = [{
   title: 'Расшифровка Энигмы',
   status_bar: 22,
   description: 'Расшифровать машину Энигма и при этом не попасть в её "Black Hole"',
-  array_li: ['Анализ данных', 'Низкая сложность', 'Dota 2', 'Enigma', '...'],
+  array_li: ['Анализ данных', 'Высокая сложность', 'Dota 2', 'Enigma', '...'],
   array_li_sublist: ['tag1', 'tag2']
 }, {
   title: 'Сдать зачет по ВЕБу',
   status_bar: 0, 
   description: 'Написать сайт, который будет удовлетворять всем требованиям преподавателя. Сайт должен быть serverless, должен содержать авторизацию. Оплата почасовая',
-  array_li: ['WEB', 'Низкая сложность', 'JS', 'Serverless'],
+  array_li: ['WEB', 'Высокая сложность', 'JS', 'Serverless'],
   array_li_sublist: []
 }];
 
@@ -121,7 +127,7 @@ for (var i = 0; i < projects.length; i++) {
 var count = 0;
 var count_projects = 0;
 var array_tags = [];
-var hidden_count = 0;
+// var hidden_count = 0;
 document.querySelectorAll('.project-box').forEach(element => {
   array_tags.push(element);
 });
@@ -149,11 +155,22 @@ document.querySelectorAll('.type-of-tags button').forEach((button) => {
           // alert('false');
           box.style.display = 'none';
         }
-      if (count_projects == 0) {
-        document.querySelector('.message').style.display = 'block';
-      }
-
       });
+
+      var hidden_count = 0;
+      document.querySelectorAll('.project-box').forEach(box => {
+        if (box.style.display == 'none') {
+          hidden_count++;
+        }
+      });
+      if (hidden_count == projects.length) {
+          document.querySelector('.message').style.display = 'block';
+        }
+      hidden_count = 0;
+      
+      // if (count_projects == 0) {
+      //   document.querySelector('.message').style.display = 'block';
+      // }
       
       var ull = document.querySelector('.selected-tags');
       var tag = document.createElement('div');
