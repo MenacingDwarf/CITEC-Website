@@ -1,1 +1,1 @@
-INSERT INTO metrics (groupId, typeId, value) VALUES (?, SELECT id FROM types WHERE type = ?, ?)
+INSERT INTO metrics (groupId, type, value) VALUES (?, ?, ?)

@@ -6,9 +6,10 @@ CREATE TABLE projects
   githubNodeId VARCHAR(127),
   name VARCHAR(127),
   client VARCHAR(255),
-  status VARCHAR(127),
+  members VARCHAR(4095),
   description VARCHAR(4095),
   githubRepo VARCHAR(255),
+  status VARCHAR(127),
   startedAt TIMESTAMP,
   closedAt TIMESTAMP
 );
@@ -20,17 +21,11 @@ CREATE TABLE groups
   createdAt TIMESTAMP
 );
 
-CREATE TABLE types
-(
-  id BIGINT AUTO_INCREMENT PRIMARY KEY,
-  type VARCHAR(255)
-);
-
 CREATE TABLE metrics
 (
   groupId BIGINT REFERENCES groups(id),
-  typeId BIGINT REFERENCES types(id),
+  type VARCHAR(255),
   value FLOAT,
 
-  CONSTRAINT pk_metrics PRIMARY KEY (groupId, typeId)
+  CONSTRAINT pk_metrics PRIMARY KEY (groupId, type)
 );

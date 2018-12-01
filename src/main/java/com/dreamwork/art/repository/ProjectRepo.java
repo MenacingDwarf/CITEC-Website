@@ -27,15 +27,11 @@ public class ProjectRepo {
     @Autowired
     public ProjectRepo(JdbcTemplate jdbc) throws IOException {
         this.jdbc = jdbc;
-        //this.insertCmd = new SimpleJdbcInsert(jdbc)
-        //        .withTableName("projects")
-        //        .usingGeneratedKeyColumns("id");
-
         this.selectCmd = StreamUtils.copyToString(new ClassPathResource("jdbc/projects/list_all.sql").getInputStream(), Charset.defaultCharset());
         this.projectsInfoCmd = StreamUtils.copyToString(new ClassPathResource("jdbc/projects/info.sql").getInputStream(), Charset.defaultCharset());
     }
 
-    public List<ListedProject> find(int limit, int offset) {
+    public List<ListedProject> listProjects(int limit, int offset) {
         return jdbc.query(
                 this.selectCmd,
 
@@ -59,7 +55,7 @@ public class ProjectRepo {
         );
     }
 
-    public List<Pair<Long, String>> findUntrackedByGithub() {
+    public List<Pair<Long, String>> listUntrackedProjects() {
         final String cmd = "SELECT id, githubRepo FROM projects WHERE githubNodeId IS NULL";
 
         return jdbc.query(
@@ -73,7 +69,21 @@ public class ProjectRepo {
         );
     }
 
-    public void batchUpdateGithubNodes(List<Pair<Long, String>> nodes) {
+    public List<Pair<Long, String>> listActiveProjects() {
+        final String cmd = "SELECT id, githubNodeId FROM projects WHERE status='active'";
+
+        return jdbc.query(
+                cmd,
+                (rs, i) -> {
+                    Pair<Long, String> p = new Pair<>();
+                    p.setFirst(rs.getLong(1));
+                    p.setSecond(rs.getString(2));
+                    return p;
+                }
+        );
+    }
+
+    public void setGithubNodes(List<Pair<Long, String>> nodes) {
         final String cmd = "UPDATE projects SET githubNodeId = ? WHERE id = ?";
 
         jdbc.batchUpdate(cmd, new BatchPreparedStatementSetter() {
@@ -91,16 +101,7 @@ public class ProjectRepo {
         });
     }
 
-    public List<String> listActiveGithubNodes() {
-        final String cmd = "SELECT githubNodeId FROM projects WHERE status='active'";
-
-        return jdbc.query(
-                cmd,
-                (rs, i) -> rs.getString(1)
-        );
-    }
-
-    public ProjectsInfo info() {
+    public ProjectsInfo getGeneralInfo() {
         return jdbc.query(
                 this.projectsInfoCmd,
 

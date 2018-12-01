@@ -1,7 +1,7 @@
 package com.dreamwork.art.repository;
 
 import com.dreamwork.art.model.Metric;
-import com.dreamwork.art.model.MetricGroup;
+import com.dreamwork.art.model.MetricsBatch;
 import com.dreamwork.art.payload.ListedMetricGroup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
@@ -16,65 +16,28 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.TimeZone;
 
 @Component
 public class MetricsRepo {
     private final JdbcTemplate jdbc;
+    private final Calendar calendar;
     private final String cmd;
     private final String insertMetricsCmd;
 
     @Autowired
     public MetricsRepo(JdbcTemplate jdbc) throws IOException {
         this.jdbc = jdbc;
+        this.calendar = Calendar.getInstance(TimeZone.getTimeZone("Europe/Moscow"));
+
         this.cmd = StreamUtils.copyToString(new ClassPathResource("jdbc/metrics/list_all.sql").getInputStream(), Charset.defaultCharset());
         this.insertMetricsCmd = StreamUtils.copyToString(new ClassPathResource("jdbc/metrics/insert_metrics.sql").getInputStream(), Charset.defaultCharset());
     }
 
-    public void batchInsert(List<MetricGroup> groups) {
-        Timestamp createdAt = new Timestamp(System.currentTimeMillis());
-
-        long firstId = jdbc.queryForObject("SELECT currval('groups_id_seq')", Long.class) + 1;
-
-        jdbc.batchUpdate("INSERT INTO groups (projectId, createdAt) VALUES (?, ?)", new BatchPreparedStatementSetter() {
-            @Override
-            public void setValues(PreparedStatement ps, int i) throws SQLException {
-                MetricGroup group = groups.get(i);
-                ps.setLong(1, group.getProjectId());
-                ps.setTimestamp(2, createdAt);
-            }
-
-            @Override
-            public int getBatchSize() {
-                return groups.size();
-            }
-        });
-
-        int metricsInEachGroup = 3;
-        int values = groups.size() * metricsInEachGroup;
-
-        jdbc.batchUpdate(this.insertMetricsCmd, new BatchPreparedStatementSetter() {
-            @Override
-            public void setValues(PreparedStatement ps, int i) throws SQLException {
-                int groupIndex = i / metricsInEachGroup;
-                int metricIndexInGroup = i % metricsInEachGroup;
-
-                MetricGroup group = groups.get(groupIndex);
-                Metric metric = group.getMetric(metricIndexInGroup);
-
-                ps.setLong(1, groupIndex + firstId);
-                ps.setString(2, metric.getType());
-                ps.setFloat(3, metric.getValue());
-            }
-
-            @Override
-            public int getBatchSize() {
-                return values;
-            }
-        });
-    }
-
-    public List<ListedMetricGroup> findEachNRow(long projectId, Timestamp from, Timestamp until, int minutes) {
+    @SuppressWarnings("ConstantConditions")
+    public List<ListedMetricGroup> list(long projectId, Timestamp from, Timestamp until, int minutes) {
         return jdbc.query(
                 cmd,
 
@@ -109,5 +72,44 @@ public class MetricsRepo {
                     return groups;
                 }
         );
+    }
+
+    @SuppressWarnings("ConstantConditions")
+    public void setMetrics(MetricsBatch batch, List<Long> projects, int metrics) {
+        long firstFreeGroup = jdbc.queryForObject("SELECT currval('groups_id_seq')", Long.class) + 1;
+        int totalMetrics = projects.size() * metrics;
+
+        jdbc.batchUpdate("INSERT INTO groups (projectId, createdAt) VALUES (?, ?)", new BatchPreparedStatementSetter() {
+            @Override
+            public void setValues(PreparedStatement ps, int i) throws SQLException {
+                ps.setLong(1, projects.get(i));
+                ps.setTimestamp(2, batch.getCreatedAt(), calendar);
+            }
+
+            @Override
+            public int getBatchSize() {
+                return projects.size();
+            }
+        });
+
+        jdbc.batchUpdate(this.insertMetricsCmd, new BatchPreparedStatementSetter() {
+            @Override
+            public void setValues(PreparedStatement ps, int i) throws SQLException {
+                int groupIndex = i / metrics;
+                int metricIndexInGroup = i % metrics;
+
+                List<Metric> group = batch.getMetrics().get(groupIndex);
+                Metric metric = group.get(metricIndexInGroup);
+
+                ps.setLong(1, groupIndex + firstFreeGroup);
+                ps.setString(2, metric.getType());
+                ps.setFloat(3, metric.getValue());
+            }
+
+            @Override
+            public int getBatchSize() {
+                return totalMetrics;
+            }
+        });
     }
 }

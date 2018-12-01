@@ -2,7 +2,7 @@ SELECT
   t.id,
   t.mintime,
   metrics.value,
-  types.type
+  metrics.type
 
 FROM
   (
@@ -17,6 +17,5 @@ FROM
   ) AS t
 
   INNER JOIN metrics ON t.id = metrics.groupId
-  INNER JOIN types ON metrics.typeId = types.id
 
 ORDER BY t.mintime DESC

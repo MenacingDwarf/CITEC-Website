@@ -30,9 +30,9 @@ public class MetricsController {
             @RequestParam(value = "interval") Optional<Integer> interval) {
 
         if (interval.isPresent()) {
-            return repo.findEachNRow(projectId, from, until, interval.get());
+            return repo.list(projectId, from, until, interval.get());
         }
 
-        return repo.findEachNRow(projectId, from, until, 2);
+        return repo.list(projectId, from, until, 2);
     }
 }

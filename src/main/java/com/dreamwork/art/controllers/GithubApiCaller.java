@@ -1,6 +1,6 @@
 package com.dreamwork.art.controllers;
 
-import com.dreamwork.art.model.MetricGroup;
+import com.dreamwork.art.model.MetricsBatch;
 import com.dreamwork.art.payload.GraphQLRequest;
 import com.dreamwork.art.repository.MetricsRepo;
 import com.dreamwork.art.repository.ProjectRepo;
@@ -21,6 +21,7 @@ import org.springframework.web.client.RestTemplate;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Component
 public class GithubApiCaller {
@@ -58,11 +59,14 @@ public class GithubApiCaller {
     public void update() {
         updateRepos();
 
-        List<String> activeNodes = projectRepo.listActiveGithubNodes();
+        List<Pair<Long, String>> activeNodes = projectRepo.listActiveProjects();
+
+        List<String> githubIds = activeNodes.stream().map(Pair::getSecond).collect(Collectors.toList());
+        List<Long> internalIds = activeNodes.stream().map(Pair::getFirst).collect(Collectors.toList());
 
         GraphQLRequest request = new GraphQLRequest();
         request.setQuery(query);
-        request.addVariable("ids", activeNodes);
+        request.addVariable("ids", githubIds);
 
         ResponseEntity<LinkedHashMap> response = rest.exchange(
                 GRAPHQL_API_URL,
@@ -71,13 +75,13 @@ public class GithubApiCaller {
                 LinkedHashMap.class
         );
 
-        List<MetricGroup> groups = this.converter.convert(response.getBody());
+        MetricsBatch batch = this.converter.convert(response.getBody());
 
-        metricsRepo.batchInsert(groups);
+        metricsRepo.setMetrics(batch, internalIds, this.converter.numberOfMetrics());
     }
 
     private void updateRepos() {
-        List<Pair<Long, String>> untracked = projectRepo.findUntrackedByGithub();
+        List<Pair<Long, String>> untracked = projectRepo.listUntrackedProjects();
 
         if (!untracked.isEmpty()) {
             for (Pair<Long, String> p : untracked) {
@@ -91,7 +95,7 @@ public class GithubApiCaller {
                 p.setSecond((String)response.getBody().get("node_id"));
             }
 
-            projectRepo.batchUpdateGithubNodes(untracked);
+            projectRepo.setGithubNodes(untracked);
         }
     }
 }

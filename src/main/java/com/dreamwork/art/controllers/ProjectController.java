@@ -29,12 +29,12 @@ public class ProjectController {
             // TODO
         }
 
-        return repo.find(limit, offset);
+        return repo.listProjects(limit, offset);
     }
 
     @RequestMapping(value = "/info", method = RequestMethod.GET)
     public ProjectsInfo repoInfo() {
-        return repo.info();
+        return repo.getGeneralInfo();
     }
 
     /*
