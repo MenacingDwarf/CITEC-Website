@@ -28,7 +28,7 @@ public class ProjectRepo {
     public ProjectRepo(JdbcTemplate jdbc) throws IOException {
         this.jdbc = jdbc;
 
-        this.listCmd = StringLoader.load("jdbc/projects/list.sql");
+        this.listCmd = StringLoader.load("jdbc/projects/list_all.sql");
         this.listActiveCmd = StringLoader.load("jdbc/projects/list_active.sql");
         this.listUntrackedCmd = StringLoader.load("jdbc/projects/list_untracked.sql");
         this.setGithubNodesCmd = StringLoader.load("jdbc/projects/set_github_nodes.sql");

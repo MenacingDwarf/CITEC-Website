@@ -5,15 +5,11 @@ import com.dreamwork.art.model.MetricsBatch;
 import com.dreamwork.art.payload.ListedMetricGroup;
 import com.dreamwork.art.tools.StringLoader;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StreamUtils;
 
 import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -37,9 +33,9 @@ public class MetricsRepo {
         this.jdbc = jdbc;
         this.calendar = Calendar.getInstance(TimeZone.getDefault());
 
-        this.listCmd = StringLoader.load("jdbc/metrics/list.sql");
+        this.listCmd = StringLoader.load("jdbc/metrics/list_all.sql");
         this.setGroupsCmd = StringLoader.load("jdbc/metrics/set_groups.sql");
-        this.setMetricsCmd = StringLoader.load("jdbc/metrics/set_metrics.sql");
+        this.setMetricsCmd = StringLoader.load("jdbc/metrics/insert_metrics.sql");
         this.getFirstFreeGroupIdCmd = StringLoader.load("jdbc/metrics/get_first_free_group_id.sql");
     }
 
