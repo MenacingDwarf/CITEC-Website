@@ -18,7 +18,7 @@ public class Application {
 
 	@PostConstruct
 	void started() {
-		TimeZone.setDefault(TimeZone.getTimeZone("UTC +3"));
+		TimeZone.setDefault(TimeZone.getTimeZone("Europe/Moscow"));
 	}
 
 	@Bean

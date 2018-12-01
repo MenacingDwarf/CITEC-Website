@@ -3,6 +3,7 @@ package com.dreamwork.art.repository;
 import com.dreamwork.art.model.Metric;
 import com.dreamwork.art.model.MetricsBatch;
 import com.dreamwork.art.payload.ListedMetricGroup;
+import com.dreamwork.art.tools.StringLoader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
@@ -12,6 +13,7 @@ import org.springframework.util.StreamUtils;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -24,22 +26,27 @@ import java.util.TimeZone;
 public class MetricsRepo {
     private final JdbcTemplate jdbc;
     private final Calendar calendar;
-    private final String cmd;
-    private final String insertMetricsCmd;
+
+    private final String listCmd;
+    private final String setGroupsCmd;
+    private final String setMetricsCmd;
+    private final String getFirstFreeGroupIdCmd;
 
     @Autowired
     public MetricsRepo(JdbcTemplate jdbc) throws IOException {
         this.jdbc = jdbc;
-        this.calendar = Calendar.getInstance(TimeZone.getTimeZone("Europe/Moscow"));
+        this.calendar = Calendar.getInstance(TimeZone.getDefault());
 
-        this.cmd = StreamUtils.copyToString(new ClassPathResource("jdbc/metrics/list_all.sql").getInputStream(), Charset.defaultCharset());
-        this.insertMetricsCmd = StreamUtils.copyToString(new ClassPathResource("jdbc/metrics/insert_metrics.sql").getInputStream(), Charset.defaultCharset());
+        this.listCmd = StringLoader.load("jdbc/metrics/list.sql");
+        this.setGroupsCmd = StringLoader.load("jdbc/metrics/set_groups.sql");
+        this.setMetricsCmd = StringLoader.load("jdbc/metrics/set_metrics.sql");
+        this.getFirstFreeGroupIdCmd = StringLoader.load("jdbc/metrics/get_first_free_group_id.sql");
     }
 
     @SuppressWarnings("ConstantConditions")
     public List<ListedMetricGroup> list(long projectId, Timestamp from, Timestamp until, int minutes) {
         return jdbc.query(
-                cmd,
+                listCmd,
                 statement -> {
                     statement.setLong(1, projectId);
                     statement.setTimestamp(2, from);
@@ -75,9 +82,9 @@ public class MetricsRepo {
 
     @SuppressWarnings("ConstantConditions")
     public void setMetrics(MetricsBatch batch, List<Long> projects) {
-        long firstFreeGroup = jdbc.queryForObject("SELECT currval('groups_id_seq')", Long.class) + 1;
+        long firstFreeGroup = jdbc.queryForObject(getFirstFreeGroupIdCmd, Long.class);
 
-        jdbc.batchUpdate("INSERT INTO groups (projectId, createdAt) VALUES (?, ?)", new BatchPreparedStatementSetter() {
+        jdbc.batchUpdate(setGroupsCmd, new BatchPreparedStatementSetter() {
             @Override
             public void setValues(PreparedStatement ps, int i) throws SQLException {
                 ps.setLong(1, projects.get(i));
@@ -90,7 +97,7 @@ public class MetricsRepo {
             }
         });
 
-        jdbc.batchUpdate(this.insertMetricsCmd, new BatchPreparedStatementSetter() {
+        jdbc.batchUpdate(this.setMetricsCmd, new BatchPreparedStatementSetter() {
             int currGroupIndex = 0;
             int currMetricIndex = 0;
 

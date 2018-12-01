@@ -14,11 +14,12 @@ import java.util.*;
 public class MetricsConverter {
     private final List<Converter> converters;
 
-    public MetricsConverter() throws ReflectiveOperationException {
+    public MetricsConverter() throws Exception {
         ClassPathScanningCandidateComponentProvider provider = new ClassPathScanningCandidateComponentProvider(false);
         provider.addIncludeFilter(new AssignableTypeFilter(Converter.class));
 
         final Set<BeanDefinition> definitions = provider.findCandidateComponents("com.dreamwork.art.service.converters");
+        final Set<String> types = new HashSet<>();
 
         try {
             this.converters = new ArrayList<>(definitions.size());
@@ -26,6 +27,14 @@ public class MetricsConverter {
             for (BeanDefinition def : definitions) {
                 Converter converter = (Converter) Class.forName(def.getBeanClassName()).newInstance();
                 this.converters.add(converter);
+
+                Set<String> newTypes = converter.types();
+                int preSize = types.size();
+                types.addAll(newTypes);
+
+                if (preSize + newTypes.size() != types.size()) {
+                    throw new Exception("Types are not unique");
+                }
             }
         }
 
@@ -41,17 +50,17 @@ public class MetricsConverter {
 
         List projects = (List)data.get("nodes");
 
-        return batch(projects);
+        return createBatch(projects);
     }
 
-    private MetricsBatch batch(List projects) {
+    private MetricsBatch createBatch(List projects) {
         List<List<Metric>> out = new ArrayList<>(projects.size());
         int size = 0;
 
         for (Object o : projects) {
             LinkedHashMap project = (LinkedHashMap)o;
 
-            List<Metric> m = new ArrayList<>();
+            List<Metric> m = new ArrayList<>(converters.size());
 
             for (Converter converter : converters) {
                 List<Metric> metrics = converter.convert(project);

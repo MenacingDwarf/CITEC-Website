@@ -5,10 +5,8 @@ import com.dreamwork.art.service.Converter;
 
 import java.util.*;
 
-import static java.util.Arrays.asList;
-
 public class RandomMetric implements Converter {
-    private Set<String> types = new HashSet<>(asList("random"));
+    private Set<String> types = Collections.singleton("random");
 
     @Override
     public List<Metric> convert(LinkedHashMap projectData) {

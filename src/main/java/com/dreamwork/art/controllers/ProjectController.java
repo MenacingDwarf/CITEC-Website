@@ -29,7 +29,7 @@ public class ProjectController {
             // TODO
         }
 
-        return repo.listProjects(limit, offset);
+        return repo.list(limit, offset);
     }
 
     @RequestMapping(value = "/info", method = RequestMethod.GET)
