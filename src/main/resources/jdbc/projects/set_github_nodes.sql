@@ -1,0 +1,1 @@
+UPDATE projects SET githubNodeId = ? WHERE id = ?

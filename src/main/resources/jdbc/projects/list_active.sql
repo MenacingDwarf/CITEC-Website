@@ -1,0 +1,1 @@
+SELECT id, githubNodeId FROM projects WHERE status = 1
