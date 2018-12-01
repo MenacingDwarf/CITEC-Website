@@ -4,11 +4,10 @@ import com.dreamwork.art.model.Metric;
 
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Set;
 
 public interface Converter {
-    //float convert(LinkedHashMap projectData);
-
     List<Metric> convert(LinkedHashMap projectData);
 
-    //String type();
+    Set<String> types();
 }
