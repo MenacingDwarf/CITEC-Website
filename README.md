@@ -14,11 +14,12 @@
       "id" : 1,
       "name" : "Website",
       "client" : "CITEC",
-      "status" : "active",                             <- active / closed
+      "members" : "Johnie, Joe, Martha",
+      "status" : 1,                             <- 2 - отмененный / 1 - активный / 0 - успешно закрытый /
       "description" : "This is our project",
       "githubRepo" : "MenacingDwarf/CITEC-Website",
       "startedAt" : "2018-10-04 10:32:12",
-      "closedAt" : "2018-11-04 12:24:36"
+      "closedAt" : "2018-11-04 12:24:36"        <- or null
     
       "tags" : [
         "website", "citec", "bla-bla"
@@ -31,27 +32,27 @@
       {
         "timestamp" : "2018-10-04 10:32:12",
         "metrics" : [
-          {"type" : 0, "value" : 0.247},      
-          {"type" : 1, "value" : 0.875},
-          {"type" : 2, "value" : 0.224}
+          {"type" : "type0", "value" : 0.247},      
+          {"type" : "type1", "value" : 0.875},
+          {"type" : "type2", "value" : 0.224}
         ]
       },
     
       {
         "timestamp" : "2018-10-04 10:34:54",
         "metrics" : [
-          {"type" : 0, "value" : 0.275},
-          {"type" : 1, "value" : 0.8474},
-          {"type" : 2, "value" : 0.422}
+          {"type" : "type0", "value" : 0.275},
+          {"type" : "type1", "value" : 0.8474},
+          {"type" : "type2", "value" : 0.422}
         ]
       },
     
       {
         "timestamp" : "2018-10-04 10:35:25",
         "metrics" : [
-          {"type" : 0, "value" : 0.17},
-          {"type" : 1, "value" : 0.4778},
-          {"type" : 2, "value" : 0.789}
+          {"type" : "type0", "value" : 0.17},
+          {"type" : "type1", "value" : 0.4778},
+          {"type" : "type2", "value" : 0.789}
         ]
       }
     ]

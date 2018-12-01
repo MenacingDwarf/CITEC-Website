@@ -1,0 +1,1 @@
+INSERT INTO groups (projectId, createdAt) VALUES (?, ?)

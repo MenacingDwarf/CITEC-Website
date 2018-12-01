@@ -14,7 +14,7 @@ public class ListedProject {
     @NonNull
     private String client;
     @NonNull
-    private String status;
+    private short status;
     @NonNull
     private String description;
     @NonNull

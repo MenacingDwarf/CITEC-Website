@@ -25,11 +25,14 @@ import java.util.stream.Collectors;
 
 @Component
 public class GithubApiCaller {
-    @Value("${githubapi.reposURL}") private String REPOSITORIES_API_URL;
-    @Value("${githubapi.graphql}") private String GRAPHQL_API_URL;
+    @Value("${githubapi.reposURL}")
+    private String REPOSITORIES_API_URL;
 
-    private final HttpHeaders authHeader;
-    private final String query;
+    @Value("${githubapi.graphql}")
+    private String GRAPHQL_API_URL;
+
+    private HttpHeaders authHeader;
+    private String query;
 
     private RestTemplate rest;
     private ProjectRepo projectRepo;
@@ -81,7 +84,7 @@ public class GithubApiCaller {
     }
 
     private void updateRepos() {
-        List<Pair<Long, String>> untracked = projectRepo.listUntrackedProjects();
+        List<Pair<Long, String>> untracked = projectRepo.listUntracked();
 
         if (!untracked.isEmpty()) {
             for (Pair<Long, String> p : untracked) {

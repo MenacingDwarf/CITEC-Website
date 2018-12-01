@@ -9,7 +9,7 @@ CREATE TABLE projects
   members VARCHAR(4095),
   description VARCHAR(4095),
   githubRepo VARCHAR(255),
-  status VARCHAR(127),
+  status SMALLINT,
   startedAt TIMESTAMP,
   closedAt TIMESTAMP
 );
