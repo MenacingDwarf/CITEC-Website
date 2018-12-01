@@ -1,6 +1,7 @@
 package com.dreamwork.art.repository;
 
 import com.dreamwork.art.payload.ListedProject;
+import com.dreamwork.art.payload.NewProject;
 import com.dreamwork.art.payload.ProjectsInfo;
 import com.dreamwork.art.tools.Pair;
 import com.dreamwork.art.tools.StringLoader;
@@ -18,6 +19,7 @@ import java.util.List;
 public class ProjectRepo {
     private JdbcTemplate jdbc;
 
+    private final String addCmd;
     private final String listCmd;
     private final String listActiveCmd;
     private final String listUntrackedCmd;
@@ -28,6 +30,7 @@ public class ProjectRepo {
     public ProjectRepo(JdbcTemplate jdbc) throws IOException {
         this.jdbc = jdbc;
 
+        this.addCmd = StringLoader.load("jdbc/projects/add.sql");
         this.listCmd = StringLoader.load("jdbc/projects/list.sql");
         this.listActiveCmd = StringLoader.load("jdbc/projects/list_active.sql");
         this.listUntrackedCmd = StringLoader.load("jdbc/projects/list_untracked.sql");
@@ -85,6 +88,20 @@ public class ProjectRepo {
         );
     }
 
+    public ProjectsInfo getGeneralInfo() {
+        return jdbc.query(
+                this.getGeneralInfoCmd,
+
+                rs -> {
+                    rs.next();
+                    ProjectsInfo info = new ProjectsInfo();
+                    info.setTotal(rs.getInt("total"));
+                    info.setActive(rs.getInt("active"));
+                    return info;
+                }
+        );
+    }
+
     public void setGithubNodes(List<Pair<Long, String>> nodes) {
         jdbc.batchUpdate(
                 this.setGithubNodesCmd,
@@ -101,20 +118,18 @@ public class ProjectRepo {
                     public int getBatchSize() {
                         return nodes.size();
                     }
-        });
+                });
     }
 
-    public ProjectsInfo getGeneralInfo() {
-        return jdbc.query(
-                this.getGeneralInfoCmd,
-
-                rs -> {
-                    rs.next();
-                    ProjectsInfo info = new ProjectsInfo();
-                    info.setTotal(rs.getInt("total"));
-                    info.setActive(rs.getInt("active"));
-                    return info;
-                }
-        );
+    public void add(NewProject newProject) {
+        jdbc.update(addCmd, ps -> {
+            ps.setString(1, newProject.getName());
+            ps.setString(2, newProject.getClient());
+            ps.setString(3, newProject.getMembers());
+            ps.setString(4, newProject.getDescription());
+            ps.setString(5, newProject.getGithubRepo());
+            ps.setShort(6, newProject.getStatus());
+            ps.setTimestamp(7, newProject.getStartedAt());
+        });
     }
 }

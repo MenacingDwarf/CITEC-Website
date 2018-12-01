@@ -20,9 +20,4 @@ public class Application {
 	void started() {
 		TimeZone.setDefault(TimeZone.getTimeZone("Europe/Moscow"));
 	}
-
-	@Bean
-	RestTemplate rest() {
-		return new RestTemplate();
-	}
 }

@@ -20,10 +20,6 @@
       "githubRepo" : "MenacingDwarf/CITEC-Website",
       "startedAt" : "2018-10-04 10:32:12",
       "closedAt" : "2018-11-04 12:24:36"        <- or null
-    
-      "tags" : [
-        "website", "citec", "bla-bla"
-      ]
     }
 
 "Метрики":

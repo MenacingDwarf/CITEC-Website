@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/metrics")
+@RequestMapping("/api/metrics")
 public class MetricsController {
     @Value("${metricsapi.defaultInterval}")
     private Integer defaultInterval;

@@ -18,7 +18,7 @@ public class Project {
     @NonNull
     private String client;
     @NonNull
-    private short status;
+    private Short status;
     @NonNull
     private String description;
     @NonNull

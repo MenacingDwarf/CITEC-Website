@@ -1,13 +1,16 @@
 package com.dreamwork.art.controllers;
 
+import com.dreamwork.art.handlers.GithubApiRestErrorHandler;
 import com.dreamwork.art.model.MetricsBatch;
 import com.dreamwork.art.payload.GraphQLRequest;
 import com.dreamwork.art.repository.MetricsRepo;
 import com.dreamwork.art.repository.ProjectRepo;
 import com.dreamwork.art.service.MetricsConverter;
 import com.dreamwork.art.tools.Pair;
+import com.dreamwork.art.tools.StringLoader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -41,13 +44,16 @@ public class GithubApiCaller {
 
     @Autowired
     public GithubApiCaller(
-            RestTemplate rest,
+            RestTemplateBuilder builder,
             ProjectRepo projectRepo,
             MetricsRepo metricsRepo,
             MetricsConverter converter,
             @Value("${githubapi.accesstoken}") String token) throws IOException {
 
-        this.rest = rest;
+        this.rest = builder
+                .errorHandler(new GithubApiRestErrorHandler())
+                .build();
+
         this.projectRepo = projectRepo;
         this.metricsRepo = metricsRepo;
         this.converter = converter;
@@ -55,7 +61,7 @@ public class GithubApiCaller {
         this.authHeader = new HttpHeaders();
         this.authHeader.set(HttpHeaders.AUTHORIZATION, "Bearer " + token);
 
-        this.query = StreamUtils.copyToString(new ClassPathResource("github/query.sdl").getInputStream(), Charset.defaultCharset());
+        this.query = StringLoader.load("github/query.sdl");
     }
 
     @Scheduled(fixedDelayString = "${githubapi.update}")

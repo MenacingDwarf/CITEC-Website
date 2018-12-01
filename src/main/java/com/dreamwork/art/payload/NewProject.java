@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.sql.Timestamp;
 import java.util.List;
 
 @Getter
@@ -15,9 +16,13 @@ public class NewProject {
     @NonNull
     private final String client;
     @NonNull
-    private final String status;
+    private final String members;
     @NonNull
     private final String description;
     @NonNull
     private final String githubRepo;
+    @NonNull
+    private final Short status;
+    @NonNull
+    private final Timestamp startedAt;
 }
