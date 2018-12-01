@@ -1,7 +1,6 @@
 package com.dreamwork.art.service;
 
 import com.dreamwork.art.model.Metric;
-import com.dreamwork.art.model.MetricGroup;
 import com.dreamwork.art.model.MetricsBatch;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
@@ -13,11 +12,11 @@ import java.util.*;
 
 @Service
 public class MetricsConverter {
-    private final List<SingleValueConverter> converters;
+    private final List<Converter> converters;
 
     public MetricsConverter() throws ReflectiveOperationException {
         ClassPathScanningCandidateComponentProvider provider = new ClassPathScanningCandidateComponentProvider(false);
-        provider.addIncludeFilter(new AssignableTypeFilter(SingleValueConverter.class));
+        provider.addIncludeFilter(new AssignableTypeFilter(Converter.class));
 
         final Set<BeanDefinition> definitions = provider.findCandidateComponents("com.dreamwork.art.service.converters");
 
@@ -25,7 +24,7 @@ public class MetricsConverter {
             this.converters = new ArrayList<>(definitions.size());
 
             for (BeanDefinition def : definitions) {
-                SingleValueConverter converter = (SingleValueConverter) Class.forName(def.getBeanClassName()).newInstance();
+                Converter converter = (Converter) Class.forName(def.getBeanClassName()).newInstance();
                 this.converters.add(converter);
             }
         }
@@ -33,10 +32,6 @@ public class MetricsConverter {
         catch (IllegalAccessException | InstantiationException | ClassNotFoundException e) {
             throw new ReflectiveOperationException();
         }
-    }
-
-    public int numberOfMetrics() {
-        return converters.size();
     }
 
     public MetricsBatch convert(LinkedHashMap response) {
@@ -51,19 +46,22 @@ public class MetricsConverter {
 
     private MetricsBatch batch(List projects) {
         List<List<Metric>> out = new ArrayList<>(projects.size());
+        int size = 0;
 
         for (Object o : projects) {
             LinkedHashMap project = (LinkedHashMap)o;
 
-            List<Metric> m = new ArrayList<>(numberOfMetrics());
+            List<Metric> m = new ArrayList<>();
 
-            for (SingleValueConverter converter : converters) {
-                m.add(new Metric(converter.type(), converter.convert(project)));
+            for (Converter converter : converters) {
+                List<Metric> metrics = converter.convert(project);
+                m.addAll(metrics);
+                size += metrics.size();
             }
 
             out.add(m);
         }
 
-        return new MetricsBatch(new Timestamp(System.currentTimeMillis()), out);
+        return new MetricsBatch(new Timestamp(System.currentTimeMillis()), out, size);
     }
 }

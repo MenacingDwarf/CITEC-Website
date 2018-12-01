@@ -77,7 +77,7 @@ public class GithubApiCaller {
 
         MetricsBatch batch = this.converter.convert(response.getBody());
 
-        metricsRepo.setMetrics(batch, internalIds, this.converter.numberOfMetrics());
+        metricsRepo.setMetrics(batch, internalIds);
     }
 
     private void updateRepos() {

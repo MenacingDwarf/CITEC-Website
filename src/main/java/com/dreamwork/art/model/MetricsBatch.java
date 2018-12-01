@@ -13,4 +13,5 @@ import java.util.List;
 public class MetricsBatch {
     private final Timestamp createdAt;
     private final List<List<Metric>> metrics;
+    private final int size;
 }

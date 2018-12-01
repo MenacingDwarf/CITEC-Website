@@ -1,6 +1,6 @@
 package com.dreamwork.backapp;
 
-import com.dreamwork.art.service.SingleValueConverter;
+import com.dreamwork.art.service.Converter;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
@@ -55,7 +55,7 @@ public class Example {
         //System.out.println(list.get(0).getClass());
 
         ClassPathScanningCandidateComponentProvider provider = new ClassPathScanningCandidateComponentProvider(false);
-        provider.addIncludeFilter(new AssignableTypeFilter(SingleValueConverter.class));
+        provider.addIncludeFilter(new AssignableTypeFilter(Converter.class));
         System.out.println(provider.findCandidateComponents("com.dreamwork.art.service.converters"));
     }
 }

@@ -40,7 +40,6 @@ public class MetricsRepo {
     public List<ListedMetricGroup> list(long projectId, Timestamp from, Timestamp until, int minutes) {
         return jdbc.query(
                 cmd,
-
                 statement -> {
                     statement.setLong(1, projectId);
                     statement.setTimestamp(2, from);
@@ -75,9 +74,8 @@ public class MetricsRepo {
     }
 
     @SuppressWarnings("ConstantConditions")
-    public void setMetrics(MetricsBatch batch, List<Long> projects, int metrics) {
+    public void setMetrics(MetricsBatch batch, List<Long> projects) {
         long firstFreeGroup = jdbc.queryForObject("SELECT currval('groups_id_seq')", Long.class) + 1;
-        int totalMetrics = projects.size() * metrics;
 
         jdbc.batchUpdate("INSERT INTO groups (projectId, createdAt) VALUES (?, ?)", new BatchPreparedStatementSetter() {
             @Override
@@ -93,22 +91,27 @@ public class MetricsRepo {
         });
 
         jdbc.batchUpdate(this.insertMetricsCmd, new BatchPreparedStatementSetter() {
+            int currGroupIndex = 0;
+            int currMetricIndex = 0;
+
             @Override
             public void setValues(PreparedStatement ps, int i) throws SQLException {
-                int groupIndex = i / metrics;
-                int metricIndexInGroup = i % metrics;
+                List<Metric> group = batch.getMetrics().get(currGroupIndex);
 
-                List<Metric> group = batch.getMetrics().get(groupIndex);
-                Metric metric = group.get(metricIndexInGroup);
+                if (group.size() == currMetricIndex) {
+                    group = batch.getMetrics().get(++currGroupIndex);
+                    currMetricIndex = 0;
+                }
 
-                ps.setLong(1, groupIndex + firstFreeGroup);
+                Metric metric = group.get(currMetricIndex++);
+                ps.setLong(1, currGroupIndex + firstFreeGroup);
                 ps.setString(2, metric.getType());
                 ps.setFloat(3, metric.getValue());
             }
 
             @Override
             public int getBatchSize() {
-                return totalMetrics;
+                return batch.getSize();
             }
         });
     }
