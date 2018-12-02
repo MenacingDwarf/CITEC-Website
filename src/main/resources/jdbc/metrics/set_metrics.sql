@@ -1,1 +1,1 @@
-INSERT INTO metrics (groupId, type, value) VALUES (?, ?, ?)
+INSERT INTO metric (groupId, type, value) VALUES (?, ?, ?)

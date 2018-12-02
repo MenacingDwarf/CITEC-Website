@@ -1,8 +1,13 @@
-CREATE SEQUENCE groups_id_seq START WITH 1;
+DROP TABLE    IF EXISTS metric;
+DROP TABLE    IF EXISTS metric_group;
+DROP TABLE    IF EXISTS project;
+DROP SEQUENCE IF EXISTS metric_group_id_seq;
 
-CREATE TABLE projects
+CREATE SEQUENCE metric_group_id_seq START WITH 1;
+
+CREATE TABLE project
 (
-  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  id SERIAL PRIMARY KEY,
   githubNodeId VARCHAR(127),
   name VARCHAR(127),
   client VARCHAR(255),
@@ -14,18 +19,18 @@ CREATE TABLE projects
   closedAt TIMESTAMP
 );
 
-CREATE TABLE groups
+CREATE TABLE metric_group
 (
-  id BIGINT DEFAULT groups_id_seq.nextval PRIMARY KEY,
-  projectId BIGINT REFERENCES projects(id),
+  id BIGINT NOT NULL DEFAULT nextval('metric_group_id_seq') PRIMARY KEY,
+  projectId BIGINT REFERENCES project(id),
   createdAt TIMESTAMP
 );
 
-CREATE TABLE metrics
+CREATE TABLE metric
 (
-  groupId BIGINT REFERENCES groups(id),
+  groupId BIGINT REFERENCES metric_group(id),
   type VARCHAR(255),
   value FLOAT,
 
-  CONSTRAINT pk_metrics PRIMARY KEY (groupId, type)
+  CONSTRAINT pk_metric PRIMARY KEY (groupId, type)
 );

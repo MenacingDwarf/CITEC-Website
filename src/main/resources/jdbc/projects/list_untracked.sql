@@ -1,1 +1,1 @@
-SELECT id, githubRepo FROM projects WHERE githubNodeId IS NULL
+SELECT id, githubRepo FROM project WHERE githubNodeId IS NULL

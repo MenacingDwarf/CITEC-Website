@@ -1,1 +1,1 @@
-UPDATE projects SET githubNodeId = ? WHERE id = ?
+UPDATE project SET githubNodeId = ? WHERE id = ?

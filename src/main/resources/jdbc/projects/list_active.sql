@@ -1,1 +1,1 @@
-SELECT id, githubNodeId FROM projects WHERE status = 1
+SELECT id, githubNodeId FROM project WHERE status = 1

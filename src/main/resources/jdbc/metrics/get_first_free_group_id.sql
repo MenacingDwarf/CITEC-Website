@@ -1,1 +1,0 @@
-SELECT currval('groups_id_seq') + 1

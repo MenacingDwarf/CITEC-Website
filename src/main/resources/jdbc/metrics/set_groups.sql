@@ -1,1 +1,1 @@
-INSERT INTO groups (projectId, createdAt) VALUES (?, ?)
+INSERT INTO metric_group (projectId, createdAt) VALUES (?, ?)

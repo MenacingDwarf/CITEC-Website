@@ -1,0 +1,1 @@
+SELECT currval('metric_group_id_seq') + 1

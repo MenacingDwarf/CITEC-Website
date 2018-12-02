@@ -46,7 +46,9 @@ public class MetricsConverter {
     public MetricsBatch convert(LinkedHashMap response) {
         Map data = (Map)response.get("data");
 
-        //Map limit = (Map)data.get("rateLimit");
+        Map limit = (Map)data.get("rateLimit");
+
+        System.out.println(limit.get("remaining"));
 
         List projects = (List)data.get("nodes");
 

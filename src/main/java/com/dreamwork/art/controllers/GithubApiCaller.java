@@ -64,7 +64,7 @@ public class GithubApiCaller {
         this.query = StringLoader.load("github/query.sdl");
     }
 
-    @Scheduled(fixedDelayString = "${githubapi.update}")
+    @Scheduled(fixedDelayString = "${githubapi.update-in-millisec}")
     public void update() {
         updateRepos();
 
