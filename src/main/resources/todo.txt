@@ -27,3 +27,8 @@ CREATE TABLE tags
 
   PRIMARY KEY(project_id, tag)
 );
+
+
+spring.datasource.url=jdbc:postgresql://localhost:5432/springbootdb
+spring.datasource.username=postgres
+spring.datasource.password=Vk230798
