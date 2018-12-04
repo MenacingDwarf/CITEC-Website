@@ -48,8 +48,6 @@ public class MetricsConverter {
 
         Map limit = (Map)data.get("rateLimit");
 
-        System.out.println(limit.get("remaining"));
-
         List projects = (List)data.get("nodes");
 
         return createBatch(projects);

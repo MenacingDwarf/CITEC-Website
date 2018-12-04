@@ -3,20 +3,18 @@ package com.dreamwork.art.repository;
 import com.dreamwork.art.model.Metric;
 import com.dreamwork.art.model.MetricsBatch;
 import com.dreamwork.art.payload.ListedMetricGroup;
+import com.dreamwork.art.payload.Project;
 import com.dreamwork.art.tools.StringLoader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementSetter;
+import org.springframework.jdbc.core.RowCallbackHandler;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.TimeZone;
+import java.sql.*;
+import java.util.*;
 
 @Component
 public class MetricsRepo {
@@ -26,6 +24,7 @@ public class MetricsRepo {
     private final String listCmd;
     private final String setGroupsCmd;
     private final String setMetricsCmd;
+    private final String getLatestMetricsCmd;
     private final String getCurrentGroupSeqIndexCmd;
 
     @Autowired
@@ -36,13 +35,15 @@ public class MetricsRepo {
         this.listCmd = StringLoader.load("jdbc/metrics/list.sql");
         this.setGroupsCmd = StringLoader.load("jdbc/metrics/set_groups.sql");
         this.setMetricsCmd = StringLoader.load("jdbc/metrics/set_metrics.sql");
+        this.getLatestMetricsCmd = StringLoader.load("jdbc/metrics/get_latest_metrics.sql");
         this.getCurrentGroupSeqIndexCmd = StringLoader.load("jdbc/metrics/get_current_group_seq_index.sql");
     }
 
     @SuppressWarnings("ConstantConditions")
     public List<ListedMetricGroup> list(long projectId, Timestamp from, Timestamp until, int minutes) {
         return jdbc.query(
-                listCmd,
+                this.listCmd,
+
                 statement -> {
                     statement.setLong(1, projectId);
                     statement.setTimestamp(2, from);
@@ -77,22 +78,59 @@ public class MetricsRepo {
     }
 
     @SuppressWarnings("ConstantConditions")
-    public void setMetrics(MetricsBatch batch, List<Long> projects) {
-        if (!projects.isEmpty()) {
-            jdbc.batchUpdate(setGroupsCmd, new BatchPreparedStatementSetter() {
+    public Map<Long, List<Metric>> getLatestMetrics(List<String> types, Long[] projects) {
+        return jdbc.query(
+                this.getLatestMetricsCmd,
+
+                statement -> {
+                    Array projectsArray = statement.getConnection().createArrayOf("BIGINT", projects);
+                    Array typesArray = statement.getConnection().createArrayOf("VARCHAR", types.toArray(new String[types.size()]));
+                    statement.setArray(1, projectsArray);
+                    statement.setArray(2, typesArray);
+                },
+
+                rs -> {
+                    Map<Long, List<Metric>> output = new HashMap<>();
+
+                    long currId = 0;
+                    List<Metric> currList = null;
+
+                    while (rs.next()) {
+                        Metric metric = new Metric(rs.getString(1), rs.getFloat(2));
+
+                        long id = rs.getLong(3);
+
+                        if (currId != id) {
+                            currId = id;
+                            currList = new ArrayList<>();
+                            output.put(currId, currList);
+                        }
+
+                        currList.add(metric);
+                    }
+
+                    return output;
+                }
+        );
+    }
+
+    @SuppressWarnings("ConstantConditions")
+    public void setMetrics(MetricsBatch batch, Long[] projects) {
+        if (projects.length != 0) {
+            jdbc.batchUpdate(this.setGroupsCmd, new BatchPreparedStatementSetter() {
                 @Override
                 public void setValues(PreparedStatement ps, int i) throws SQLException {
-                    ps.setLong(1, projects.get(i));
+                    ps.setLong(1, projects[i]);
                     ps.setTimestamp(2, batch.getCreatedAt(), calendar);
                 }
 
                 @Override
                 public int getBatchSize() {
-                    return projects.size();
+                    return projects.length;
                 }
             });
 
-            long firstAddedGroup = jdbc.queryForObject(getCurrentGroupSeqIndexCmd, Long.class) - projects.size();
+            long firstAddedGroup = jdbc.queryForObject(getCurrentGroupSeqIndexCmd, Long.class) - projects.length;
 
             jdbc.batchUpdate(this.setMetricsCmd, new BatchPreparedStatementSetter() {
                 int currGroupIndex = 0;

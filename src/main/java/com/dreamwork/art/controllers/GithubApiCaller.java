@@ -47,8 +47,7 @@ public class GithubApiCaller {
             RestTemplateBuilder builder,
             ProjectRepo projectRepo,
             MetricsRepo metricsRepo,
-            MetricsConverter converter,
-            @Value("${githubapi.accesstoken}") String token) throws IOException {
+            MetricsConverter converter) throws IOException {
 
         this.rest = builder
                 .errorHandler(new GithubApiRestErrorHandler())
@@ -56,10 +55,12 @@ public class GithubApiCaller {
 
         this.projectRepo = projectRepo;
         this.metricsRepo = metricsRepo;
-        this.converter = converter;
+        this.converter   = converter;
 
         this.authHeader = new HttpHeaders();
-        this.authHeader.set(HttpHeaders.AUTHORIZATION, "Bearer " + token);
+        this.authHeader.set(HttpHeaders.CONTENT_TYPE, "application/json");
+        this.authHeader.set(HttpHeaders.ACCEPT, "application/json");
+        this.authHeader.set(HttpHeaders.AUTHORIZATION, "bearer " + System.getenv("GITHUB_TOKEN"));
 
         this.query = StringLoader.load("github/query.sdl");
     }
@@ -71,7 +72,7 @@ public class GithubApiCaller {
         List<Pair<Long, String>> activeNodes = projectRepo.listActiveProjects();
 
         List<String> githubIds = activeNodes.stream().map(Pair::getSecond).collect(Collectors.toList());
-        List<Long> internalIds = activeNodes.stream().map(Pair::getFirst).collect(Collectors.toList());
+        Long[] internalIds = activeNodes.stream().map(Pair::getFirst).toArray(Long[]::new);
 
         GraphQLRequest request = new GraphQLRequest();
         request.setQuery(query);
@@ -97,7 +98,7 @@ public class GithubApiCaller {
                 ResponseEntity<HashMap> response = rest.exchange(
                         REPOSITORIES_API_URL + p.getSecond(),
                         HttpMethod.GET,
-                        HttpEntity.EMPTY,
+                        new HttpEntity<>(null, authHeader),
                         HashMap.class
                 );
 

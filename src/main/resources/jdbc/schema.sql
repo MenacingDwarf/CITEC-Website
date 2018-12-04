@@ -1,5 +1,6 @@
 DROP TABLE    IF EXISTS metric;
 DROP TABLE    IF EXISTS metric_group;
+DROP TABLE    IF EXISTS tag;
 DROP TABLE    IF EXISTS project;
 DROP SEQUENCE IF EXISTS metric_group_id_seq;
 
@@ -17,6 +18,14 @@ CREATE TABLE project
   status SMALLINT,
   startedAt TIMESTAMP,
   closedAt TIMESTAMP
+);
+
+CREATE TABLE tag
+(
+  projectId BIGINT REFERENCES project(id),
+  tag VARCHAR(255),
+
+  CONSTRAINT pk_tag PRIMARY KEY (projectId, tag)
 );
 
 CREATE TABLE metric_group

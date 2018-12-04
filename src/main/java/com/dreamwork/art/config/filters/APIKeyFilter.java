@@ -1,4 +1,4 @@
-package com.dreamwork.art.config.requestFilters;
+package com.dreamwork.art.config.filters;
 
 import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
 

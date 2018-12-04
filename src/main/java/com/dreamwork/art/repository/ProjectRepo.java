@@ -1,6 +1,7 @@
 package com.dreamwork.art.repository;
 
-import com.dreamwork.art.payload.ListedProject;
+import com.dreamwork.art.payload.ListedMetricGroup;
+import com.dreamwork.art.payload.Project;
 import com.dreamwork.art.payload.NewProject;
 import com.dreamwork.art.payload.ProjectsInfo;
 import com.dreamwork.art.tools.Pair;
@@ -13,6 +14,8 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Component
@@ -38,7 +41,7 @@ public class ProjectRepo {
         this.getGeneralInfoCmd = StringLoader.load("jdbc/projects/get_general_info.sql");
     }
 
-    public List<ListedProject> list(int limit, int offset) {
+    public List<Project> list(int limit, int offset) {
         return jdbc.query(
                 this.listCmd,
 
@@ -47,17 +50,48 @@ public class ProjectRepo {
                     statement.setInt(2, offset);
                 },
 
-                (rs, i) -> {
-                    ListedProject project = new ListedProject();
-                    project.setId(rs.getLong("id"));
-                    project.setName(rs.getString("name"));
-                    project.setClient(rs.getString("client"));
-                    project.setStatus(rs.getShort("status"));
-                    project.setDescription(rs.getString("description"));
-                    project.setGithubRepo(rs.getString("githubRepo"));
-                    project.setStartedAt(rs.getTimestamp("startedAt"));
-                    project.setClosedAt(rs.getTimestamp("closedAt"));
-                    return project;
+                rs -> {
+                    List<Project> projects = new ArrayList<>();
+
+                    long currId = 0;
+                    Project currProject = null;
+
+                    while (rs.next()) {
+                        long id = rs.getLong(1);
+
+                        if (currId != id) {
+                            currId = id;
+                            currProject = new Project();
+                            currProject.setId(rs.getLong(1));
+                            currProject.setName(rs.getString(3));
+                            currProject.setClient(rs.getString(4));
+                            currProject.setStatus(rs.getShort(5));
+                            currProject.setDescription(rs.getString(6));
+                            currProject.setGithubRepo(rs.getString(7));
+                            currProject.setStartedAt(rs.getTimestamp(8));
+                            currProject.setClosedAt(rs.getTimestamp(9));
+
+                            String tag = rs.getString(2);
+
+                            if (rs.wasNull()) {
+                                currProject.setTags(Collections.emptyList());
+                            }
+
+                            else {
+                                List<String> tags = new ArrayList<>();
+                                tags.add(tag);
+                                currProject.setTags(tags);
+                            }
+
+                            projects.add(currProject);
+                        }
+
+                        else {
+                            currProject.getTags().add(rs.getString(2));
+                        }
+                    }
+
+                    return projects;
                 }
         );
     }

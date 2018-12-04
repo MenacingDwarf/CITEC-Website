@@ -4,6 +4,7 @@ import lombok.*;
 
 @Getter
 @Setter
+@ToString
 @RequiredArgsConstructor
 public class Metric {
     @NonNull

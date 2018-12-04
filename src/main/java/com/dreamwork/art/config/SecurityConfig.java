@@ -1,6 +1,6 @@
 package com.dreamwork.art.config;
 
-import com.dreamwork.art.config.requestFilters.APIKeyFilter;
+import com.dreamwork.art.config.filters.APIKeyFilter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.BadCredentialsException;

@@ -14,4 +14,9 @@ public class MetricsBatch {
     private final Timestamp createdAt;
     private final List<List<Metric>> metrics;
     private final int size;
+
+    @Override
+    public String toString() {
+        return metrics.toString();
+    }
 }

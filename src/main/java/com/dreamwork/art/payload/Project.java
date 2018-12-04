@@ -1,13 +1,16 @@
 package com.dreamwork.art.payload;
 
+import com.dreamwork.art.model.Metric;
 import lombok.*;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
 @NoArgsConstructor
-public class ListedProject {
+public class Project {
     private Long id;
     @NonNull
     private String name;
@@ -23,4 +26,8 @@ public class ListedProject {
     private Timestamp startedAt;
 
     private Timestamp closedAt;
+
+    private List<String> tags;
+
+    private List<Metric> metrics;
 }

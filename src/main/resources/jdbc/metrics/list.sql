@@ -12,7 +12,7 @@ FROM
 
     FROM metric_group
     WHERE projectId = ? AND createdAt BETWEEN ? AND ?
-    GROUP BY DATEADD(MINUTE, DATEDIFF(MINUTE, '1970-01-01 00:00:01', createdAt) / ? * ?, '1970-01-01 00:00:01')
+    GROUP BY TIMESTAMP WITH TIME ZONE 'epoch' + INTERVAL '1 second' * round(extract('epoch' FROM createdAt) / (? * 60)) * (? * 60)
 
   ) AS t
 
