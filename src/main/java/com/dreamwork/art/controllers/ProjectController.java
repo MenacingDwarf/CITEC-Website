@@ -4,6 +4,7 @@ import com.dreamwork.art.model.Metric;
 import com.dreamwork.art.payload.Project;
 import com.dreamwork.art.payload.NewProject;
 import com.dreamwork.art.payload.ProjectsInfo;
+import com.dreamwork.art.payload.UpdatedProject;
 import com.dreamwork.art.repository.MetricsRepo;
 import com.dreamwork.art.repository.ProjectRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,12 +49,22 @@ public class ProjectController {
     }
 
     @RequestMapping(value = "/api/public/projects/info", method = RequestMethod.GET)
-    public ProjectsInfo repoInfo() {
+    public ProjectsInfo info() {
         return projectRepo.getGeneralInfo();
     }
 
     @RequestMapping(value = "/api/private/projects", method = RequestMethod.POST)
     public void createProject(@Valid @RequestBody NewProject dto) {
         projectRepo.add(dto);
+    }
+
+    @RequestMapping(value = "/api/private/projects", method = RequestMethod.PUT)
+    public void updateProject(@Valid @RequestBody UpdatedProject dto) {
+        projectRepo.update(dto);
+    }
+
+    @RequestMapping(value = "/api/private/projects", method = RequestMethod.DELETE)
+    public void deleteProject(@Valid @RequestParam long id) {
+        projectRepo.delete(id);
     }
 }

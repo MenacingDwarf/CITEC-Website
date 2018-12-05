@@ -16,8 +16,6 @@ public class NewProject {
     @NonNull
     private final String client;
     @NonNull
-    private final String members;
-    @NonNull
     private final String description;
     @NonNull
     private final String githubRepo;
@@ -25,4 +23,8 @@ public class NewProject {
     private final Short status;
     @NonNull
     private final Timestamp startedAt;
+
+    private final Timestamp closedAt;
+
+    private final List<String> tags;
 }

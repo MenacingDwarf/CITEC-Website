@@ -1,9 +1,6 @@
 package com.dreamwork.art.repository;
 
-import com.dreamwork.art.payload.ListedMetricGroup;
-import com.dreamwork.art.payload.Project;
-import com.dreamwork.art.payload.NewProject;
-import com.dreamwork.art.payload.ProjectsInfo;
+import com.dreamwork.art.payload.*;
 import com.dreamwork.art.tools.Pair;
 import com.dreamwork.art.tools.StringLoader;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +20,8 @@ public class ProjectRepo {
     private JdbcTemplate jdbc;
 
     private final String addCmd;
+    private final String deleteCmd;
+    private final String updateCmd;
     private final String listCmd;
     private final String listActiveCmd;
     private final String listUntrackedCmd;
@@ -34,6 +33,8 @@ public class ProjectRepo {
         this.jdbc = jdbc;
 
         this.addCmd = StringLoader.load("jdbc/projects/add.sql");
+        this.deleteCmd = StringLoader.load("jdbc/projects/delete.sql");
+        this.updateCmd = StringLoader.load("jdbc/projects/update.sql");
         this.listCmd = StringLoader.load("jdbc/projects/list.sql");
         this.listActiveCmd = StringLoader.load("jdbc/projects/list_active.sql");
         this.listUntrackedCmd = StringLoader.load("jdbc/projects/list_untracked.sql");
@@ -159,11 +160,27 @@ public class ProjectRepo {
         jdbc.update(addCmd, ps -> {
             ps.setString(1, newProject.getName());
             ps.setString(2, newProject.getClient());
-            ps.setString(3, newProject.getMembers());
-            ps.setString(4, newProject.getDescription());
-            ps.setString(5, newProject.getGithubRepo());
-            ps.setShort(6, newProject.getStatus());
-            ps.setTimestamp(7, newProject.getStartedAt());
+            ps.setString(3, newProject.getDescription());
+            ps.setString(4, newProject.getGithubRepo());
+            ps.setShort(5, newProject.getStatus());
+            ps.setTimestamp(6, newProject.getStartedAt());
+            ps.setTimestamp(7, newProject.getClosedAt());
         });
+    }
+
+    public void update(UpdatedProject updatedProject) {
+        jdbc.update(updateCmd, ps -> {
+            ps.setString(1, updatedProject.getName());
+            ps.setString(2, updatedProject.getClient());
+            ps.setString(3, updatedProject.getDescription());
+            ps.setShort(4, updatedProject.getStatus());
+            ps.setTimestamp(5, updatedProject.getStartedAt());
+            ps.setTimestamp(6, updatedProject.getClosedAt());
+            ps.setLong(7, updatedProject.getId());
+        });
+    }
+
+    public void delete(long id) {
+        jdbc.update(deleteCmd, ps -> ps.setLong(1, id));
     }
 }

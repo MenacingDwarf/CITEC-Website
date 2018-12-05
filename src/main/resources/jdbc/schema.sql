@@ -12,7 +12,6 @@ CREATE TABLE project
   githubNodeId VARCHAR(127),
   name VARCHAR(127),
   client VARCHAR(255),
-  members VARCHAR(4095),
   description VARCHAR(4095),
   githubRepo VARCHAR(255),
   status SMALLINT,
@@ -22,7 +21,7 @@ CREATE TABLE project
 
 CREATE TABLE tag
 (
-  projectId BIGINT REFERENCES project(id),
+  projectId BIGINT REFERENCES project(id) ON DELETE CASCADE,
   tag VARCHAR(255),
 
   CONSTRAINT pk_tag PRIMARY KEY (projectId, tag)
@@ -31,13 +30,13 @@ CREATE TABLE tag
 CREATE TABLE metric_group
 (
   id BIGINT NOT NULL DEFAULT nextval('metric_group_id_seq') PRIMARY KEY,
-  projectId BIGINT REFERENCES project(id),
+  projectId BIGINT REFERENCES project(id) ON DELETE CASCADE,
   createdAt TIMESTAMP
 );
 
 CREATE TABLE metric
 (
-  groupId BIGINT REFERENCES metric_group(id),
+  groupId BIGINT REFERENCES metric_group(id) ON DELETE CASCADE,
   type VARCHAR(255),
   value FLOAT,
 

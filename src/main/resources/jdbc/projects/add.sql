@@ -1,2 +1,2 @@
-INSERT INTO project (name, client, members, description, githubRepo, status, startedAt)
-VALUES (?, ?, ?, ?, ?, ?, ?)
+INSERT INTO project (name, client, description, githubRepo, status, startedAt, closedAt)
+VALUES (?, ?, ?, ?, ?, ?, ?);
