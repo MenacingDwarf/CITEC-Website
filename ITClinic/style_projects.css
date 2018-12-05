@@ -1,5 +1,76 @@
+html,
 body {
     font-family: 'Roboto', sans-serif;
+    height: 100%;
+}
+
+
+.preloader {
+    z-index: 1;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background-color: #34314c;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    --first-color: #ff7473;
+    --second-color: #ffc952;
+    --third-color: #47b8e0;
+    --thickness: 3px;
+    --duration: 1s;
+    transform: var(--duration);
+}
+
+.preloader h1{
+    color: white;
+}
+
+.preloader__content {
+    position: relative;
+    margin-left: 20px;
+    width: 200px;
+    height: 200px;
+}
+
+.preloader__first,
+.preloader__second,
+.preloader__third {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    animation: var(--duration) linear;
+}
+
+.preloader__first {
+    border-bottom: var(--thickness) solid var(--first-color);
+    animation-name: first;
+}
+
+.preloader__second {
+    border-right: var(--thickness) solid var(--second-color);
+    animation-name: second;
+}
+
+.preloader__third {
+    border-top: var(--thickness) solid var(--third-color);
+    animation-name: third;
+}
+
+@keyframes first {
+    0% { transform: rotateX(35deg) rotateY(-45deg) rotateZ(0deg); }
+    100% { transform: rotateX(35deg) rotateY(-45deg) rotateZ(360deg); }
+}
+
+@keyframes second {
+    0% { transform: rotateX(50deg) rotateY(10deg) rotateZ(0deg); }
+    100% { transform: rotateX(50deg) rotateY(10deg) rotateZ(360deg); }
+}
+
+@keyframes third {
+    0% { transform: rotateX(35deg) rotateY(55deg) rotateZ(0deg); }
+    100% { transform: rotateX(35deg) rotateY(55deg) rotateZ(360deg); }
 }
 
 .page-header {
@@ -12,8 +83,18 @@ body {
 }
 
 nav {
-    width: 660px;
-    margin: 0 auto 10px;
+/*    width: 660px;*/
+    justify-content: center;
+    align-items: center;
+    height: auto;
+/*    margin: 0 auto 10px;*/
+    top: 0px;
+    left: 0px;
+    background-color: #f8f9fa; 
+/*    opacity: 0.8; */
+    position: fixed; 
+    z-index: 5; 
+    width: 100%; 
 }
 
 ul {
@@ -27,6 +108,12 @@ li {
     padding-right: 15px;
 }
 
+.topmenu {
+    width: 50%;
+    margin-left: 200px;
+    float: left;
+}
+
 .topmenu > li {
     display: inline-block;
     margin-right: 20px;
@@ -36,6 +123,7 @@ li {
 .topmenu > li:last-child {
     margin-right: 0;
 }
+
 
 a {
     display: block;
@@ -47,13 +135,14 @@ a {
 }
 
 .fa {
-    font-family: "FontAwesome";
+/*    font-family: "FontAwesome";*/
     color: inherit;
     padding-left: 10px;
 }
 
 .submenu {
     position: absolute;
+/*    font-size: 15px;*/
     top: 100%;
     left: 0;
     width: 100%;
@@ -64,10 +153,16 @@ a {
     transition: 0.5s ease-in-out;
 }
 
+
 .nav ul a {
+    
+/*    margin-left: 50px;*/
+    padding: 20px 10px;
     color: black;
 }
+
 .nav .submenu {
+    text-align: center;
     display: none;
 }
 .nav ul li:hover .submenu {
@@ -86,24 +181,51 @@ a {
     border-bottom: 1px solid rgba(255,255,255,.3);
 }
 
+.div-form {
+    float: right;
+    height: 100%;
+}
+
+.find-form {
+    margin-top: auto;
+    margin-bottom: auto;
+    position: relative;
+    padding: 25px;
+}
+
 .find {
-    position: absolute;
+/*    position: absolute;*/
     height: 20px;
     font-size: 20px;
     width: 250px;
-    right: 110px;
-    top: 33px;
+/*    right: 110px;*/
+/*    top: 33px;*/
     border-top: 2px solid #666666;
 }
 
 .find-button{
-    width: 25px;
+    width: 20px;
+/*
     position: absolute;
     top: 33px;
     right: 80px;
+*/
+}
+
+.body-container {
+    display: table;
+    width: 100%;
+    height: 100%;
+}
+
+footer {
+    display: table-row;
+    height: 1px;
 }
 
 .current-projects {
+/*    margin-top: 50px;*/
+/*    margin-top: 0px;*/
     background-color: #6E8894;
     font-size: 50px;
     text-align: left;
@@ -253,8 +375,19 @@ main .short-description {
 }
 
 .message {
-    font-size: 20px;
+    margin-top: 30px;
+    font-size: 30px;
     display: none;
+/*    align-content: center;*/
+}
+
+.message img {
+    margin-top: 30px;
+    margin-right: auto;
+    margin-left: auto;
+    display: block;
+    width: 650px;
+    height: auto;
 }
 
 .help-bar {
@@ -312,17 +445,21 @@ main .short-description {
     border: 1px solid black;
     padding: 17px;
     align-content: center;
+    height: auto;
 }
 
 .search {
-    font-size: 20px;
+    font-size: 25px;
+/*    float: left; */
     width: 220px;
 }
 
 .search-button {
-    width: 30px;
+/*    margin-left: 10px;*/
+/*    float: left;*/
+    width: 26px;
 /*    outline: none;*/
-    position: absolute;
+/*    position: absolute;*/
 }
 
 .type-of-tags {
@@ -388,8 +525,10 @@ main .short-description {
 }
 
 .page-footer {
+/*
     clear: both;
     min-height: 20px;
+*/
     padding: 5px;
     font-size: 17px;
     color: white;

@@ -5,99 +5,128 @@
         <link rel="stylesheet" href="style_projects.css">
         <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
         <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
+        
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        
         <title>Проекты</title>
     </head>
     <body>
-       <header class="page-header">
-           <nav class="nav">
-               <ul class="topmenu">
-                   <li><a class="main-page" href="">Главная<i class="fa fa-angle-down"></i></a>
-                       <ul class="submenu">
-                           <li><a href="">Новости</a></li>
-                           <li><a href="">О центре</a></li>
-                       </ul>
-                   </li>
-                   <li><a class="projects" href="">Проекты<i class="fa fa-angle-down"></i></a>
-                       <ul class="submenu">
-                           <li><a href="">Будущие проекты</a></li>
-                           <li><a href="">Текущие проекты</a></li>
-                           <li><a href="">Архив</a></li>
-                       </ul>
-                   </li>
-                   <li><a class="contacts" href="">Контакты</a></li>
-               </ul>
-               <form action="">
-                    <input type="text" class="find" required>
-                    <label for="find">
-                       <input type="image" src="images/find.png" alt="Найти" class="find-button">
-                    </label>
-               </form>
-           </nav>
-       </header>
-       <main>
-            <h1 class="current-projects">Текущие проекты</h1>
+      <div class="body-container">
+           <header class="page-header">
+               <nav class="nav">
+                   <ul class="topmenu">
+                       <li><a class="main-page" href="">Главная<i class="fa fa-angle-down"></i></a>
+                           <ul class="submenu">
+                               <li><a href="">Новости</a></li>
+                               <li><a href="">О центре</a></li>
+                           </ul>
+                       </li>
+                       <li><a class="projects" href="">Проекты<i class="fa fa-angle-down"></i></a>
+                           <ul class="submenu">
+                               <li><a href="">Будущие проекты</a></li>
+                               <li><a href="">Текущие проекты</a></li>
+                               <li><a href="">Архив</a></li>
+                           </ul>
+                       </li>
+                       <li><a class="contacts" href="">Контакты</a></li>
+<!--
+                       <li>
+                           <form action="">
+                            <input type="text" class="find" required>
+                            <label for="find">
+                               <input type="image" src="images/find.png" alt="Найти" class="find-button">
+                            </label>
+                           </form>
+                       </li>
+-->
+                   </ul>
+                    <div class="div-form">
+                       <form action="" class="find-form">
+                            <input type="text" class="find" required>
+                            <label for="find">
+                               <input type="image" src="images/find.png" alt="Найти" class="find-button">
+                            </label>
+                        </form>
+                    </div>
+               </nav>
+           </header>
+           <div class="preloader">
+              <h1>Подождите. Идет загрузка проектов...</h1>
+               <div class="preloader__content">
+                   <div class="preloader__first"></div>
+                   <div class="preloader__second"></div>
+                   <div class="preloader__third"></div>
+               </div>
+           </div>
+           <main>
+                <h1 class="current-projects">Текущие проекты</h1>
 
-            <ul class="list-of-projects">
-                <li class="message">Извините, но проектов с таким наборов тегов пока что в нашей базе данных не существует :с</li>
-            </ul>
-            
-            
-            <div class="help-bar">
-                <div class="selected-tags">
-                   
-                    <h1 class=tags-name>Выбранные теги:</h1>
-                    <button class="reset">Сбросить</button>
-                    
+                <ul class="list-of-projects">
+                    <li class="message">Извините, но проектов с таким наборов тегов пока что в нашей базе данных не существует :с
+                    <img src="/images/sadcat.jpg" alt=""></li>
+                </ul>
+
+
+                <div class="help-bar">
+                    <div class="selected-tags">
+
+                        <h1 class=tags-name>Выбранные теги:</h1>
+                        <button class="reset">Сбросить</button>
+
+                    </div>
+
+                    <div class="search-project">
+                        <form action="" class="search-form">
+                            <input type="text" class="search" placeholder="Поиск тега..." required>
+                            <label for="search">
+                                <input type="image" src="images/find.png" alt="Найти" class="search-button">
+                            </label>
+                        </form>
+                    </div>
+
+                    <div class="type-of-tags">
+                        <ul class="first-type-of-tags">
+                            <li><button>WEB</button></li>
+                            <li><button>Анализ данных</button></li>
+                            <li><button>Анализ текстов</button></li>
+                            <li><button>Робототехника</button></li>
+                        </ul>
+
+                        <ul class="second-type-of-tags">
+                           <li><button>Низкая сложность</button></li>
+                           <li><button>Средняя сложность</button></li> 
+                           <li><button>Высокая сложность</button></li> 
+                        </ul>
+
+                        <ul class="third-type-of-tags">
+                            <li><button>3D модели</button></li>
+                            <li><button>Python</button></li>
+                            <li><button>Алгоритмы</button></li>
+                            <li><button>Machine Learning</button></li>
+                            <li><button>Very cool tag</button></li>
+                            <li><button>An another tag</button></li>
+                        </ul>
+                    </div>    
                 </div>
-                
-                <div class="search-project">
-                    <form action="" class="search-form">
-                        <input type="text" class="search" placeholder="Поиск тега..." required>
-                        <label for="search">
-                            <input type="image" src="images/find.png" alt="Найти" class="search-button">
-                        </label>
-                    </form>
+
+                <script src="project_list_script.js"></script>  
+<!--                <script src="about_project_script.js"></script>-->
+<!--                <script src="sea.js"></script>  -->
+<!--                <script src="test_jasmine.js"></script>  -->
+            </main>
+            <footer class="page-footer">
+                <div class="info">
+                    <span class="title-footer">Контактная информация:</span><br>
+                    Эту часть я еще не придумала,<br>
+                    но, мне кажется, исправить ее позже<br>
+                    будет не так сложно<br>
                 </div>
-                
-                <div class="type-of-tags">
-                    <ul class="first-type-of-tags">
-                        <li><button>WEB</button></li>
-                        <li><button>Анализ данных</button></li>
-                        <li><button>Анализ текстов</button></li>
-                        <li><button>Робототехника</button></li>
-                    </ul>
-
-                    <ul class="second-type-of-tags">
-                       <li><button>Низкая сложность</button></li>
-                       <li><button>Средняя сложность</button></li> 
-                       <li><button>Высокая сложность</button></li> 
-                    </ul>
-
-                    <ul class="third-type-of-tags">
-                        <li><button>3D модели</button></li>
-                        <li><button>Python</button></li>
-                        <li><button>Алгоритмы</button></li>
-                        <li><button>Machine Learning</button></li>
-                        <li><button>Very cool tag</button></li>
-                        <li><button>An another tag</button></li>
-                    </ul>
-                </div>    
-            </div>
-            
-            <script src="project_list_script.js"></script>  
-        </main>
-        <footer class="page-footer">
-            <div class="info">
-                <span class="title-footer">Контактная информация:</span><br>
-                Эту часть я еще не придумала,<br>
-                но, мне кажется, исправить ее позже<br>
-                будет не так сложно<br>
-            </div>
-            <div class="contacts">
-                Санкт-Петербургский Государственный Университет<br>
-                Факультет прикладной математики - процессов управления<br>
-                2018
-            </div>
-        </footer>
+                <div class="contacts">
+                    Санкт-Петербургский Государственный Университет<br>
+                    Факультет прикладной математики - процессов управления<br>
+                    2018
+                </div>
+            </footer>
+        </div>
     </body>
 </html>

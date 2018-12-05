@@ -1,5 +1,19 @@
+html,
 body {
     font-family: 'Roboto', sans-serif;
+    height: 100%;
+}
+
+.body-container {
+    display: table;
+    width: 100%;
+    height: 100%;
+}
+
+
+footer {
+    display: table-row;
+    height: 1px;
 }
 
 .page-header {
@@ -12,8 +26,22 @@ body {
 }
 
 nav {
-    width: 660px;
-    margin: 0 auto 10px;
+/*    width: 660px;*/
+    height: auto;
+/*    margin: 0 auto 10px;*/
+    top: 0px;
+    left: 0px;
+    background-color: #f8f9fa; 
+/*    opacity: 0.8; */
+    position: fixed; 
+    z-index: 5; 
+    width: 100%; 
+}
+
+.topmenu {
+    width: 50%;
+    margin-left: 200px;
+    float: left;
 }
 
 ul {
@@ -85,9 +113,14 @@ li {
 }
 
 .nav ul a {
+    
+/*    margin-left: 50px;*/
+    padding: 20px 10px;
     color: black;
 }
+
 .nav .submenu {
+    text-align: center;
     display: none;
 }
 .nav ul li:hover .submenu {
@@ -106,21 +139,42 @@ li {
     border-bottom: 1px solid rgba(255,255,255,.3);
 }
 
+.submenu li a {
+    padding-left: 0px;
+    padding-right: 0px;
+    font-size: 15px;
+    border-bottom: 1px solid rgba(255,255,255,.3);
+}
+
+.div-form {
+    float: right;
+    height: 100%;
+}
+
+.find-form {
+    margin-top: auto;
+    margin-bottom: auto;
+    position: relative;
+    padding: 25px;
+}
+
 .find {
-    position: absolute;
+/*    position: absolute;*/
     height: 20px;
     font-size: 20px;
     width: 250px;
-    right: 110px;
-    top: 33px;
+/*    right: 110px;*/
+/*    top: 33px;*/
     border-top: 2px solid #666666;
 }
 
-.find-button {
-    width: 25px;
+.find-button{
+    width: 20px;
+/*
     position: absolute;
     top: 33px;
     right: 80px;
+*/
 }
 
 .gray-line {
@@ -302,7 +356,7 @@ li {
     padding: 5px 10px;
 }
 
-.page-footer {
+.page-footer { 
     clear: both;
     margin-top: 30px;
     min-height: 20px;

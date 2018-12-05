@@ -7,77 +7,84 @@
         <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
         <script src="https://cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
+        
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        
         <title>О проекте</title>
     </head>
     <body>
-        <header class="page-header">
-           <nav class="nav">
-               <ul class="topmenu">
-                   <li><a class="main-page" href="">Главная<i class="fa fa-angle-down"></i></a>
-                       <ul class="submenu">
-                           <li><a href="">Новости</a></li>
-                           <li><a href="">О центре</a></li>
-                       </ul>
-                   </li>
-                   <li><a class="projects" href="projects_list.html">Проекты<i class="fa fa-angle-down"></i></a>
-                       <ul class="submenu">
-                           <li><a href="projects_list.html">Будущие проекты</a></li>
-                           <li><a href="projects_list.html">Текущие проекты</a></li>
-                           <li><a href="projects_list.html">Архив</a></li>
-                       </ul>
-                   </li>
-                   <li><a class="contacts" href="">Контакты</a></li>
-               </ul>
-               <form action="">
-                    <input type="text" class="find" required>
-                    <label for="find">
-                       <input type="image" src="images/find.png" alt="Найти" class="find-button">
-                    </label>
-               </form>
-           </nav>
-       </header>
-       <main>
-            <div class="gray-line"></div>
-            <div class="project-description">
-                <div class="ct-chart ct-golden-section chart1"></div>
-            </div>
-               
-           <div class="about-project-bar">
-               <div class="status-project">
-                   <b>Статус: </b>
-                   <span id="status"></span>
-               </div>
-               <div class="hard-level">
-                   <b>Сложность: <span id="level"></span></b>
-               </div>
-               <div class="list-of-jobs">
-                   <h2>Вакансии:</h2>
-                   <ul class="list"></ul>
-                   
-                   <div class="join-button">
-                       <button class="join-to-project">Присоединиться к проекту</button>
+       <div class="body-container">
+            <header class="page-header">
+               <nav class="nav">
+                   <ul class="topmenu">
+                       <li><a class="main-page" href="">Главная<i class="fa fa-angle-down"></i></a>
+                           <ul class="submenu">
+                               <li><a href="">Новости</a></li>
+                               <li><a href="">О центре</a></li>
+                           </ul>
+                       </li>
+                       <li><a class="projects" href="projects_list.html">Проекты<i class="fa fa-angle-down"></i></a>
+                           <ul class="submenu">
+                               <li><a href="projects_list.html">Будущие проекты</a></li>
+                               <li><a href="projects_list.html">Текущие проекты</a></li>
+                               <li><a href="projects_list.html">Архив</a></li>
+                           </ul>
+                       </li>
+                       <li><a class="contacts" href="">Контакты</a></li>
+                   </ul>
+                   <div class="div-form">
+                       <form action="" class="find-form">
+                            <input type="text" class="find" required>
+                            <label for="find">
+                               <input type="image" src="images/find.png" alt="Найти" class="find-button">
+                            </label>
+                        </form>
+                    </div>
+               </nav>
+           </header>
+           <main>
+                <div class="gray-line"></div>
+                <div class="project-description">
+                    <div class="ct-chart ct-golden-section chart1"></div>
+                </div>
+
+               <div class="about-project-bar">
+                   <div class="status-project">
+                       <b>Статус: </b>
+                       <span id="status"></span>
+                   </div>
+                   <div class="hard-level">
+                       <b>Сложность: <span id="level"></span></b>
+                   </div>
+                   <div class="list-of-jobs">
+                       <h2>Вакансии:</h2>
+                       <ul class="list"></ul>
+
+                       <div class="join-button">
+                           <button class="join-to-project">Присоединиться к проекту</button>
+                       </div>
+                   </div>
+                   <div class="box-of-tags">
+                      <ul class="tags"></ul>
                    </div>
                </div>
-               <div class="box-of-tags">
-                  <ul class="tags"></ul>
-               </div>
-           </div>
-           <script src="about_project_script.js"></script>  
-       </main>
-       
-       <footer class="page-footer">
-            <section class="info">
-                <span class="title-footer">Контактная информация:</span><br>
-                Эту часть я еще не придумала,<br>
-                но, мне кажется, исправить ее позже<br>
-                будет не так сложно<br>
-            </section>
-            <section class="contacts">
-                Санкт-Петербургский Государственный Университет<br>
-                Факультет прикладной математики - процессов управления<br>
-                2018
-            </section>
-        </footer>
-        
+<!--               <script src="project_list_script.js"></script>-->
+               <script src="about_project_script.js"></script>  
+           </main>
+
+           <footer class="page-footer">
+                <section class="info">
+                    <span class="title-footer">Контактная информация:</span><br>
+                    Эту часть я еще не придумала,<br>
+                    но, мне кажется, исправить ее позже<br>
+                    будет не так сложно<br>
+                </section>
+                <section class="contacts">
+                    Санкт-Петербургский Государственный Университет<br>
+                    Факультет прикладной математики - процессов управления<br>
+                    2018
+                </section>
+            </footer>
+        </div>
     </body>
 </html>
