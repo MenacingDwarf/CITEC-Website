@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/metrics")
 public class MetricsController {
     @Value("${metricsapi.defaultInterval}")
     private Integer defaultInterval;
@@ -26,7 +25,7 @@ public class MetricsController {
         this.repo = repo;
     }
 
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(value = "/api/public/metrics", method = RequestMethod.GET)
     public List<ListedMetricGroup> getMetricsList(
             @RequestParam long projectId,
             @RequestParam Timestamp from,

@@ -8,11 +8,11 @@ FROM
   (
     SELECT
       min(id) AS id,
-      min(createdAt) AS mintime
+      max(createdAt) AS mintime
 
     FROM metric_group
     WHERE projectId = ? AND createdAt BETWEEN ? AND ?
-    GROUP BY TIMESTAMP WITH TIME ZONE 'epoch' + INTERVAL '1 second' * round(extract('epoch' FROM createdAt) / (? * 60)) * (? * 60)
+    GROUP BY to_timestamp(floor(extract('epoch' FROM createdAt) / (? * 60)) * (? * 60))
 
   ) AS t
 

@@ -8,26 +8,29 @@ import com.dreamwork.art.repository.ProjectRepo;
 import com.dreamwork.art.service.MetricsConverter;
 import com.dreamwork.art.tools.Pair;
 import com.dreamwork.art.tools.StringLoader;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StreamUtils;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
-import java.nio.charset.Charset;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 @Component
 public class GithubApiCaller {
+    private final static Logger logger = LoggerFactory.getLogger(GithubApiCaller.class);
+
     @Value("${githubapi.reposURL}")
     private String REPOSITORIES_API_URL;
 
@@ -68,32 +71,15 @@ public class GithubApiCaller {
     @Scheduled(fixedDelayString = "${githubapi.update-in-millisec}")
     public void update() {
         updateRepos();
-
-        List<Pair<Long, String>> activeNodes = projectRepo.listActiveProjects();
-
-        List<String> githubIds = activeNodes.stream().map(Pair::getSecond).collect(Collectors.toList());
-        Long[] internalIds = activeNodes.stream().map(Pair::getFirst).toArray(Long[]::new);
-
-        GraphQLRequest request = new GraphQLRequest();
-        request.setQuery(query);
-        request.addVariable("ids", githubIds);
-
-        ResponseEntity<LinkedHashMap> response = rest.exchange(
-                GRAPHQL_API_URL,
-                HttpMethod.POST,
-                new HttpEntity<>(request, authHeader),
-                LinkedHashMap.class
-        );
-
-        MetricsBatch batch = this.converter.convert(response.getBody());
-
-        metricsRepo.setMetrics(batch, internalIds);
+        updateMetrics();
     }
 
     private void updateRepos() {
         List<Pair<Long, String>> untracked = projectRepo.listUntracked();
 
         if (!untracked.isEmpty()) {
+            logger.info("Repositories update has started. Total untracked: {}.", untracked.size());
+
             for (Pair<Long, String> p : untracked) {
                 ResponseEntity<HashMap> response = rest.exchange(
                         REPOSITORIES_API_URL + p.getSecond(),
@@ -107,5 +93,47 @@ public class GithubApiCaller {
 
             projectRepo.setGithubNodes(untracked);
         }
+    }
+
+    private void updateMetrics() {
+        List<Pair<Long, String>> activeProjects = projectRepo.listActiveProjects();
+
+        logger.info("Metrics update has started. Total active projects: {}.", activeProjects.size());
+
+        String[] githubIds = new String[activeProjects.size()];
+        Long[]   localIds  = new Long[activeProjects.size()];
+
+        int i = 0;
+        for (Pair<Long, String> p : activeProjects) {
+            githubIds[i] = p.getSecond();
+            localIds[i] = p.getFirst();
+            i++;
+        }
+
+        GraphQLRequest request = new GraphQLRequest();
+        request.setQuery(query);
+        request.addVariable("ids", githubIds);
+
+        ResponseEntity<LinkedHashMap> response = rest.exchange(
+                GRAPHQL_API_URL,
+                HttpMethod.POST,
+                new HttpEntity<>(request, authHeader),
+                LinkedHashMap.class
+        );
+
+        Map data = (Map)response.getBody().get("data");
+
+        processApiLimits((Map)data.get("rateLimit"));
+
+        MetricsBatch batch = this.converter.convert((List)data.get("nodes"));
+
+        logger.info("Batch created. Size: {}.", batch.getSize());
+
+        metricsRepo.setMetrics(batch, localIds);
+    }
+
+    private void processApiLimits(Map limit) {
+        logger.info("Update cost: {}, Reset at: {}.", limit.get("cost"), limit.get("resetAt"));
+        logger.warn("Remaining points: {}", limit.get("remaining"));
     }
 }

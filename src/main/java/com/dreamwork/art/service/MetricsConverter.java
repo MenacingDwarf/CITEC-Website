@@ -43,17 +43,7 @@ public class MetricsConverter {
         }
     }
 
-    public MetricsBatch convert(LinkedHashMap response) {
-        Map data = (Map)response.get("data");
-
-        Map limit = (Map)data.get("rateLimit");
-
-        List projects = (List)data.get("nodes");
-
-        return createBatch(projects);
-    }
-
-    private MetricsBatch createBatch(List projects) {
+    public MetricsBatch convert(List projects) {
         List<List<Metric>> out = new ArrayList<>(projects.size());
         int size = 0;
 

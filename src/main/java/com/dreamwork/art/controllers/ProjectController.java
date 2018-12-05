@@ -14,7 +14,6 @@ import java.util.*;
 import java.util.function.Consumer;
 
 @RestController
-@RequestMapping("/api/projects")
 public class ProjectController {
     private ProjectRepo projectRepo;
     private MetricsRepo metricsRepo;
@@ -25,7 +24,7 @@ public class ProjectController {
         this.metricsRepo = metricsRepo;
     }
 
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(value = "/api/public/projects", method = RequestMethod.GET)
     public List<Project> getProjectList(
             @RequestParam int limit,
             @RequestParam int offset,
@@ -48,12 +47,12 @@ public class ProjectController {
         return projects;
     }
 
-    @RequestMapping(value = "/info", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/public/projects/info", method = RequestMethod.GET)
     public ProjectsInfo repoInfo() {
         return projectRepo.getGeneralInfo();
     }
 
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(value = "/api/private/projects", method = RequestMethod.POST)
     public void createProject(@Valid @RequestBody NewProject dto) {
         projectRepo.add(dto);
     }

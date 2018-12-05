@@ -11,6 +11,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.jdbc.core.RowCallbackHandler;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.sql.*;
@@ -115,13 +116,14 @@ public class MetricsRepo {
     }
 
     @SuppressWarnings("ConstantConditions")
+    @Transactional
     public void setMetrics(MetricsBatch batch, Long[] projects) {
         if (projects.length != 0) {
             jdbc.batchUpdate(this.setGroupsCmd, new BatchPreparedStatementSetter() {
                 @Override
                 public void setValues(PreparedStatement ps, int i) throws SQLException {
                     ps.setLong(1, projects[i]);
-                    ps.setTimestamp(2, batch.getCreatedAt(), calendar);
+                    ps.setTimestamp(2, batch.getCreatedAt());
                 }
 
                 @Override

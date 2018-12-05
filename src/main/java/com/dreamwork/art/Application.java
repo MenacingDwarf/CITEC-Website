@@ -19,6 +19,6 @@ public class Application {
 
 	@PostConstruct
 	void started() {
-		TimeZone.setDefault(TimeZone.getTimeZone("Europe/Moscow"));
+		//TimeZone.setDefault(TimeZone.getTimeZone("Europe/Moscow"));
 	}
 }
