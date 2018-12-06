@@ -71,111 +71,149 @@ public/projects/info
 <pre>
 [
     {
-        "id": 5,
-        "name": "Project #5",
-        "client": "Client #5",
-        "status": 1,
-        "description": "This is #5 project",
-        "githubRepo": "/mozilla/addons-server",
-        "difficulty": "medium",
-        "startedAt": "2011-11-11T00:00:00.000+0400",
-        "closedAt": null,
-        "tags": [],
-        "metrics": [
-            {
-                "type": "progress",
-                "value": 0.9247605
-            },
-            {
-                "type": "countclosed",
-                "value": 1065
-            }
-        ]
-    },
-    {
-        "id": 3,
-        "name": "Project #4",
-        "client": "Client #4",
-        "status": 0,
-        "description": "This is #4 project",
-        "githubRepo": "/ocornut/imgui",
-        "difficulty": "very hard",
-        "startedAt": "2010-11-11T00:00:00.000+0300",
-        "closedAt": null,
-        "tags": [
-            "imgui"
-        ],
-        "metrics": []
-    },
-    {
-        "id": 4,
-        "name": "Project #3",
-        "client": "Client #3",
-        "status": 1,
-        "description": "This is #3 project",
-        "githubRepo": "/aws-amplify/amplify-js",
-        "difficulty": "easy peasy",
-        "startedAt": "2009-11-11T00:00:00.000+0300",
-        "closedAt": null,
-        "tags": [
-            "aws",
-            "amazon"
-        ],
-        "metrics": [
-            {
-                "type": "progress",
-                "value": 0.9107468
-            },
-            {
-                "type": "countclosed",
-                "value": 61
-            }
-        ]
-    },
-    {
         "id": 1,
-        "name": "Project #2",
-        "client": "Client #2",
+        "name": "Анализ данных онлайн курсов",
+        "client": "СПбГУ, ЦРЭОР",
         "status": 1,
-        "description": "This is #2 project",
-        "githubRepo": "/SilverTiger/lwjgl3-tutorial",
-        "difficulty": "hard",
-        "startedAt": "2008-11-11T00:00:00.000+0300",
+        "description": "На основе данных материалов и действий учащихся онлайн-курсов выявить показатели, определяющие их эффективность. Эффективность курса состоит из двух компонент: качество образовательных материалов и коммерческий потенциал. Данные являются отчётами и логами образовательных платформ “Coursera” и “Открытое образование”.",
+        "githubRepo": "/SPbSUPractiseTeam/Quality_rating_for_SPbSU_courses",
+        "difficulty": "Высокий",
+        "startedAt": "2018-09-15T00:00:00.000+0300",
         "closedAt": null,
-        "tags": [],
+        "tags": [
+            "data"
+        ],
         "metrics": [
             {
                 "type": "progress",
-                "value": 0.5
+                "value": 0.72727275
             },
             {
                 "type": "countclosed",
-                "value": 2
+                "value": 11
             }
         ]
     },
     {
         "id": 2,
-        "name": "Project #1",
-        "client": "Client #1",
+        "name": "Аналитика данных электронного расписания",
+        "client": "СПбГУ, УСИТ",
         "status": 1,
-        "description": "This is #1 project",
-        "githubRepo": "/SilverTiger/lwjgl3",
-        "difficulty": "easy",
-        "startedAt": "2007-11-11T00:00:00.000+0300",
+        "description": "На основе данных электронного расписания и свободного ПО с открытым исходным кодом создать сервис кэширования данных и аналитическое Web приложение. Примеры аналитических срезов: занятость аудиторий, занятость преподавателей, занятость студентов, доступные аудитории по заданным критериям.",
+        "githubRepo": "/spbu-schedule/backend",
+        "difficulty": "Средний",
+        "startedAt": "2018-09-15T00:00:00.000+0300",
         "closedAt": null,
         "tags": [
-            "java",
-            "lwjgl"
+            "data"
         ],
         "metrics": [
             {
                 "type": "progress",
-                "value": "0"
+                "value": 1
             },
             {
                 "type": "countclosed",
                 "value": 0
+            }
+        ]
+    },
+    {
+        "id": 3,
+        "name": "Анализ текстов судебных решений",
+        "client": "Dentons",
+        "status": 1,
+        "description": "Обработка текстов судебных решений, извлечение ссылок на нормативные и законодательные акты, статистика.",
+        "githubRepo": "/robot-lab/judyst-main-web-service",
+        "difficulty": "Высокий",
+        "startedAt": "2018-09-15T00:00:00.000+0300",
+        "closedAt": null,
+        "tags": [
+            "text",
+            "data"
+        ],
+        "metrics": [
+            {
+                "type": "progress",
+                "value": 0.50769234
+            },
+            {
+                "type": "countclosed",
+                "value": 65
+            }
+        ]
+    },
+    {
+        "id": 4,
+        "name": "Портфолио студентов",
+        "client": "СПбГУ, УРМ",
+        "status": 1,
+        "description": "Web приложения для ввода и согласования студентами и сотрудниками УРМ сведений о достижениях студентов. Прототип функциональности по расчёту повышенной степендии на основе данных портфолио.",
+        "githubRepo": "/am-cp-edu-project/portfolio",
+        "difficulty": "Высокий",
+        "startedAt": "2018-09-15T00:00:00.000+0300",
+        "closedAt": null,
+        "tags": [
+            "dont give it up!"
+        ],
+        "metrics": [
+            {
+                "type": "progress",
+                "value": 1
+            },
+            {
+                "type": "countclosed",
+                "value": 0
+            }
+        ]
+    },
+    {
+        "id": 5,
+        "name": "Сайт ЦИТИК",
+        "client": "СПбГУ, УУ",
+        "status": 1,
+        "description": "Простой сайт с информацией о центре, выполненных и предстоящих работах, с инструментами коммуникации.",
+        "githubRepo": "/MenacingDwarf/CITEC-Website",
+        "difficulty": "Средний",
+        "startedAt": "2018-09-15T00:00:00.000+0300",
+        "closedAt": null,
+        "tags": [
+            "citec",
+            "web"
+        ],
+        "metrics": [
+            {
+                "type": "progress",
+                "value": 0.80952376
+            },
+            {
+                "type": "countclosed",
+                "value": 42
+            }
+        ]
+    },
+    {
+        "id": 6,
+        "name": "Сайт Медиацентра",
+        "client": "СПбГУ, Медиацентр",
+        "status": 1,
+        "description": "Разработать сайт Медиацентра СПбГУ в соответствии с требованиями, предъявленными заказчиком",
+        "githubRepo": "/valery-kirichenko/mediacenter",
+        "difficulty": "Средний",
+        "startedAt": "2018-09-15T00:00:00.000+0300",
+        "closedAt": null,
+        "tags": [
+            "web",
+            "media"
+        ],
+        "metrics": [
+            {
+                "type": "progress",
+                "value": 0.14705883
+            },
+            {
+                "type": "countclosed",
+                "value": 17
             }
         ]
     }
@@ -307,4 +345,3 @@ public/projects/info
     }
 }
 </pre>
-
