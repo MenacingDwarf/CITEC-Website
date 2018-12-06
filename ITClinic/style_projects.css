@@ -223,6 +223,57 @@ footer {
     height: 1px;
 }
 
+.add-project-div {
+/*    width: auto;*/
+    margin-left: 180px;
+    border: 1px solid red;
+    margin-bottom: 30px;
+    clear: both;
+}
+
+.add-project-button {
+/*    margin-left: 180px;*/
+    font-size: 15px;
+    margin-bottom: 20px;
+    padding: 20px;
+/*    clear: both;*/
+}
+
+.add-project-form {
+/*    display: none;*/
+    width: 40%;
+    border: 1px solid blue;
+}
+
+.add-project-form label {
+    border: 1px solid green;
+    vertical-align: top;
+    padding: 10px;
+    display: block;
+}
+
+.add-project-form .form-description-title {
+    display: inline-block;
+}
+
+.add-project-form input{
+/*    display: block;*/
+    margin-left: 10px;
+    font-size: 15px;
+}
+
+.add-project-form .create-project {
+    width: 300px;
+    height: 400px;
+    color: red;
+    padding: 10px;
+    margin-top: 20px;
+    margin-left: 30px;
+    margin-bottom: 20px;
+    font-size: 30px;
+    
+}
+
 .current-projects {
 /*    margin-top: 50px;*/
 /*    margin-top: 0px;*/
@@ -381,6 +432,13 @@ main .short-description {
 /*    align-content: center;*/
 }
 
+.search-project div{
+    font-size: 25px;
+    font-weight: bold;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
 .message img {
     margin-top: 30px;
     margin-right: auto;
@@ -443,7 +501,8 @@ main .short-description {
 
 .search-project {
     border: 1px solid black;
-    padding: 17px;
+/*    padding: 17px;*/
+    padding-left: 17px;
     align-content: center;
     height: auto;
 }
@@ -482,6 +541,7 @@ main .short-description {
 }
 
 .type-of-tags li{
+    display: inline-block;
     padding-bottom: 10px;
 }
 

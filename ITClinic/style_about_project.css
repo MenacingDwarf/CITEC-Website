@@ -66,7 +66,7 @@ li {
 }
 
 .chart1.ct-chart .ct-series.ct-series-a .ct-line {
-    stroke: #F04D3A;
+    stroke: #4DB543;
     animation: dashoffset-seven 200ms infinite linear;
 }
 
@@ -76,7 +76,7 @@ li {
  
 /*Цвет, толщина и стиль второй линии*/
 .chart1.ct-chart .ct-series.ct-series-b .ct-line {
-    stroke: #4DB543;
+    stroke: #F04D3A;
     animation: dashoffset 200ms infinite linear;
 }
  
@@ -317,6 +317,8 @@ li {
     font-size: 15px;
     border-radius: 10px;
     display: block;
+    margin-top: 20px;
+    margin-bottom: 20px;
     margin-left: auto;
     margin-right: auto;
     
