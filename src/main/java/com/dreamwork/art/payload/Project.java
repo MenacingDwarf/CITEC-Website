@@ -23,6 +23,8 @@ public class Project {
     @NonNull
     private String githubRepo;
     @NonNull
+    private String difficulty;
+    @NonNull
     private Timestamp startedAt;
 
     private Timestamp closedAt;

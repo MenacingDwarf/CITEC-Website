@@ -14,6 +14,7 @@ CREATE TABLE project
   client VARCHAR(255),
   description VARCHAR(4095),
   githubRepo VARCHAR(255),
+  difficulty VARCHAR(63),
   status SMALLINT,
   startedAt TIMESTAMP,
   closedAt TIMESTAMP
@@ -23,7 +24,6 @@ CREATE TABLE tag
 (
   projectId BIGINT REFERENCES project(id) ON DELETE CASCADE,
   tag VARCHAR(255),
-
   CONSTRAINT pk_tag PRIMARY KEY (projectId, tag)
 );
 
@@ -39,6 +39,5 @@ CREATE TABLE metric
   groupId BIGINT REFERENCES metric_group(id) ON DELETE CASCADE,
   type VARCHAR(255),
   value FLOAT,
-
   CONSTRAINT pk_metric PRIMARY KEY (groupId, type)
 );

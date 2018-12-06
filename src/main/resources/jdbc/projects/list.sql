@@ -1,9 +1,9 @@
 SELECT
-  id, tag.tag, name, client, status, description, githubRepo, startedAt, closedAt
+  id, tag.tag, name, client, status, description, githubRepo, difficulty, startedAt, closedAt
 FROM
   (
     SELECT
-      id, name, client, status, description, githubRepo, startedAt, closedAt
+      id, name, client, status, description, githubRepo, difficulty, startedAt, closedAt
     FROM
       project
     ORDER BY

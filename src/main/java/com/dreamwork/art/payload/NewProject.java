@@ -20,6 +20,8 @@ public class NewProject {
     @NonNull
     private final String githubRepo;
     @NonNull
+    private final String difficulty;
+    @NonNull
     private final Short status;
     @NonNull
     private final Timestamp startedAt;

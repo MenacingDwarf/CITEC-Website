@@ -1,2 +1,3 @@
-INSERT INTO project (name, client, description, githubRepo, status, startedAt, closedAt)
-VALUES (?, ?, ?, ?, ?, ?, ?);
+INSERT INTO project (name, client, description, githubRepo, difficulty, status, startedAt, closedAt)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+RETURNING id;

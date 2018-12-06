@@ -2,6 +2,13 @@
 
 ### HEROKU APP API URL: https://agile-depths-28542.herokuapp.com/api
 
+
+#### Метрики:
+
+progress - общий прогресс
+
+countclosed - число закрытых issues (?)
+
 #### Authorization:
 
 Для любых public запросов слать Authorization: 8006590e56914f96bb2a0d67a998a234.
@@ -64,15 +71,40 @@ public/projects/info
 <pre>
 [
     {
+        "id": 5,
+        "name": "Project #5",
+        "client": "Client #5",
+        "status": 1,
+        "description": "This is #5 project",
+        "githubRepo": "/mozilla/addons-server",
+        "difficulty": "medium",
+        "startedAt": "2011-11-11T00:00:00.000+0400",
+        "closedAt": null,
+        "tags": [],
+        "metrics": [
+            {
+                "type": "progress",
+                "value": 0.9247605
+            },
+            {
+                "type": "countclosed",
+                "value": 1065
+            }
+        ]
+    },
+    {
         "id": 3,
         "name": "Project #4",
         "client": "Client #4",
         "status": 0,
         "description": "This is #4 project",
         "githubRepo": "/ocornut/imgui",
-        "startedAt": "2010-11-10T21:00:00.000+0000",
+        "difficulty": "very hard",
+        "startedAt": "2010-11-11T00:00:00.000+0300",
         "closedAt": null,
-        "tags": [],
+        "tags": [
+            "imgui"
+        ],
         "metrics": []
     },
     {
@@ -82,17 +114,21 @@ public/projects/info
         "status": 1,
         "description": "This is #3 project",
         "githubRepo": "/aws-amplify/amplify-js",
-        "startedAt": "2009-11-10T21:00:00.000+0000",
+        "difficulty": "easy peasy",
+        "startedAt": "2009-11-11T00:00:00.000+0300",
         "closedAt": null,
-        "tags": [],
+        "tags": [
+            "aws",
+            "amazon"
+        ],
         "metrics": [
             {
-                "type": "another",
-                "value": 0.91372854
+                "type": "progress",
+                "value": 0.9107468
             },
             {
-                "type": "random",
-                "value": 0.5974828
+                "type": "countclosed",
+                "value": 61
             }
         ]
     },
@@ -103,17 +139,18 @@ public/projects/info
         "status": 1,
         "description": "This is #2 project",
         "githubRepo": "/SilverTiger/lwjgl3-tutorial",
-        "startedAt": "2008-11-10T21:00:00.000+0000",
+        "difficulty": "hard",
+        "startedAt": "2008-11-11T00:00:00.000+0300",
         "closedAt": null,
         "tags": [],
         "metrics": [
             {
-                "type": "another",
-                "value": 0.8923983
+                "type": "progress",
+                "value": 0.5
             },
             {
-                "type": "random",
-                "value": 0.39174023
+                "type": "countclosed",
+                "value": 2
             }
         ]
     },
@@ -124,20 +161,21 @@ public/projects/info
         "status": 1,
         "description": "This is #1 project",
         "githubRepo": "/SilverTiger/lwjgl3",
-        "startedAt": "2007-11-10T21:00:00.000+0000",
+        "difficulty": "easy",
+        "startedAt": "2007-11-11T00:00:00.000+0300",
         "closedAt": null,
         "tags": [
-            "birdy",
-            "wings"
+            "java",
+            "lwjgl"
         ],
         "metrics": [
             {
-                "type": "another",
-                "value": 0.010045757
+                "type": "progress",
+                "value": "0"
             },
             {
-                "type": "random",
-                "value": 0.046086412
+                "type": "countclosed",
+                "value": 0
             }
         ]
     }
@@ -201,9 +239,10 @@ public/projects/info
 * client (**)
 * description (**)
 * githubRepo (**) - пример: /heroku/java-getting-started
+* difficulty (**) - пример: hard
 * status (**)
 * startedAt (**) - пример: 2012-09-17
-* closetAt
+* closedAt
 * tags
 
 ========
@@ -218,6 +257,7 @@ public/projects/info
 * name
 * client 
 * description
+* difficulty
 * status 
 * startedAt
 * closetAt

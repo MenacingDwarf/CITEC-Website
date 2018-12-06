@@ -6,7 +6,9 @@ import com.dreamwork.art.tools.StringLoader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.sql.PreparedStatement;
@@ -20,6 +22,8 @@ public class ProjectRepo {
     private JdbcTemplate jdbc;
 
     private final String addCmd;
+    private final String addTagCmd;
+    private final String deleteTagsCmd;
     private final String deleteCmd;
     private final String updateCmd;
     private final String listCmd;
@@ -33,6 +37,8 @@ public class ProjectRepo {
         this.jdbc = jdbc;
 
         this.addCmd = StringLoader.load("jdbc/projects/add.sql");
+        this.addTagCmd = StringLoader.load("jdbc/projects/add_tag.sql");
+        this.deleteTagsCmd = StringLoader.load("jdbc/projects/delete_tags.sql");
         this.deleteCmd = StringLoader.load("jdbc/projects/delete.sql");
         this.updateCmd = StringLoader.load("jdbc/projects/update.sql");
         this.listCmd = StringLoader.load("jdbc/projects/list.sql");
@@ -69,8 +75,9 @@ public class ProjectRepo {
                             currProject.setStatus(rs.getShort(5));
                             currProject.setDescription(rs.getString(6));
                             currProject.setGithubRepo(rs.getString(7));
-                            currProject.setStartedAt(rs.getTimestamp(8));
-                            currProject.setClosedAt(rs.getTimestamp(9));
+                            currProject.setDifficulty(rs.getString(8));
+                            currProject.setStartedAt(rs.getTimestamp(9));
+                            currProject.setClosedAt(rs.getTimestamp(10));
 
                             String tag = rs.getString(2);
 
@@ -156,28 +163,74 @@ public class ProjectRepo {
                 });
     }
 
+    @Transactional
     public void add(NewProject newProject) {
-        jdbc.update(addCmd, ps -> {
-            ps.setString(1, newProject.getName());
-            ps.setString(2, newProject.getClient());
-            ps.setString(3, newProject.getDescription());
-            ps.setString(4, newProject.getGithubRepo());
-            ps.setShort(5, newProject.getStatus());
-            ps.setTimestamp(6, newProject.getStartedAt());
-            ps.setTimestamp(7, newProject.getClosedAt());
-        });
+        Long genId = jdbc.query(
+                this.addCmd,
+
+                ps -> {
+                    ps.setString(1, newProject.getName());
+                    ps.setString(2, newProject.getClient());
+                    ps.setString(3, newProject.getDescription());
+                    ps.setString(4, newProject.getGithubRepo());
+                    ps.setString(5, newProject.getDifficulty());
+                    ps.setShort(6, newProject.getStatus());
+                    ps.setTimestamp(7, newProject.getStartedAt());
+                    ps.setTimestamp(8, newProject.getClosedAt());
+                },
+
+                rs -> {
+                    rs.next();
+                    return rs.getLong(1);
+                }
+        );
+
+        if (newProject.getTags() != null) {
+            jdbc.batchUpdate(this.addTagCmd, new BatchPreparedStatementSetter() {
+                @Override
+                public void setValues(PreparedStatement ps, int i) throws SQLException {
+                    String tag = newProject.getTags().get(i);
+                    ps.setLong(1, genId);
+                    ps.setString(2, tag);
+                }
+
+                @Override
+                public int getBatchSize() {
+                    return newProject.getTags().size();
+                }
+            });
+        }
     }
 
+    @Transactional
     public void update(UpdatedProject updatedProject) {
         jdbc.update(updateCmd, ps -> {
             ps.setString(1, updatedProject.getName());
             ps.setString(2, updatedProject.getClient());
             ps.setString(3, updatedProject.getDescription());
-            ps.setShort(4, updatedProject.getStatus());
-            ps.setTimestamp(5, updatedProject.getStartedAt());
-            ps.setTimestamp(6, updatedProject.getClosedAt());
-            ps.setLong(7, updatedProject.getId());
+            ps.setString(4, updatedProject.getDifficulty());
+            ps.setShort(5, updatedProject.getStatus());
+            ps.setTimestamp(6, updatedProject.getStartedAt());
+            ps.setTimestamp(7, updatedProject.getClosedAt());
+            ps.setLong(8, updatedProject.getId());
         });
+
+        if (updatedProject.getTags() != null) {
+            jdbc.update(this.deleteTagsCmd, ps -> ps.setLong(1, updatedProject.getId()));
+            jdbc.batchUpdate(this.addTagCmd, new BatchPreparedStatementSetter() {
+                @Override
+                public void setValues(PreparedStatement ps, int i) throws SQLException {
+                    String tag = updatedProject.getTags().get(i);
+                    ps.setLong(1, updatedProject.getId());
+                    ps.setString(2, tag);
+                }
+
+                @Override
+                public int getBatchSize() {
+                    return updatedProject.getTags().size();
+                }
+            });
+        }
     }
 
     public void delete(long id) {

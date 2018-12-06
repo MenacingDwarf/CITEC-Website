@@ -21,6 +21,8 @@ public class UpdatedProject {
 
     private final String description;
 
+    private final String difficulty;
+
     private final Short status;
 
     private final Timestamp startedAt;
