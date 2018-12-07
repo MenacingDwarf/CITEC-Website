@@ -33,7 +33,7 @@ public class TwoMetrics implements Converter {
         else ans = (float) count / count1;
         float toreturnprogress = 0;
         if (countmile > 0) toreturnprogress = ans * (countclosedmile + 1) / countmile;
-        else toreturnprogress = ans;
+        else toreturnprogress = 0;
         float toreturncount = count1;
 
 
@@ -42,14 +42,11 @@ public class TwoMetrics implements Converter {
         List<Metric> toreturn = new ArrayList<>();
         Collections.addAll(toreturn, test1, test2);
         return toreturn;
+
     }
 
     @Override
     public Set<String> types() {
-        Set<String> s = new HashSet<String>() {{
-            add("progress");
-            add("countclosed");
-        }};
-        return s;
+        return new HashSet<>(Arrays.asList("progress", "countclosed"));
     }
 }

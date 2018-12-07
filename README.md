@@ -64,7 +64,7 @@ public/projects/info
 
 #####Пример:
 
-Запрос: <pre>public/projects?limit=5\&offset=0\&metrics=random, another</pre>
+Запрос: <pre>public/projects?limit=5\&offset=0\&metrics=progress, countclosed</pre>
 
 Ответ:
 
