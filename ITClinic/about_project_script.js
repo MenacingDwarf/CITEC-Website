@@ -50,8 +50,6 @@ $(document).ready(function() {
           success: function(met) {
             createDates(met);
             createClosedCount(met);
-            console.log(met);
-            console.log(metrics_chart);
             run(project);
           }
         });
@@ -129,12 +127,18 @@ var run = function(project) {
   var content;
   var class_status;
 
-  var jobs = document.querySelector('.list-of-jobs');
+  var status_proj;
 
-  if (project.metrics[0].value == 1) { 
+  if (project.metrics[0].type == 'progress') {
+    status_proj = Math.round(project.metrics[0].value * 100);
+  } else {
+    status_proj = Math.round(project.metrics[1].value * 100);
+  }
+
+  if (status_proj == 100) { 
     content = 'Завершён'; 
     class_status = 'finished';
-  } else if (project.metrics[0].value == 0) {
+  } else if (status_proj == 0) {
     content = 'Не начат'; 
     class_status = 'in-future';
   } else { 

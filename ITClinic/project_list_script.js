@@ -12,10 +12,11 @@ $(document).ready(function() {
       'Authorization': '8006590e56914f96bb2a0d67a998a234'
     },
     success: function(data) {
-        projects = data;
-        preloader();
-        createTags(data);
-        create(data);
+      projects = data;
+      // console.log(data);
+      preloader();
+      createTags(data);
+      create(data);
     }
   });
 });
@@ -32,7 +33,7 @@ var createTags = function(projects) {
 
   tags_for_bar = new Set(tags_for_bar);
   tags_for_bar = Array.from(tags_for_bar);
-  console.log(tags_for_bar);
+  // console.log(tags_for_bar);
 
 
   var ulist = document.querySelector('.type-of-tags .first-type-of-tags');
@@ -99,10 +100,16 @@ var createBox = function(project) {
 
   var foo = document.createElement('div');
   foo.classList.add('foo');
+  var status;
   if (project.metrics.length == 0) {
     foo.textContent = '0' + '%';
   } else {
-    var status = Math.round(project.metrics[0].value * 100);
+    if (project.metrics[0].type == 'progress') {
+      status = Math.round(project.metrics[0].value * 100);
+    } else {
+      status = Math.round(project.metrics[1].value * 100);
+    }
+    
     foo.textContent = status + '%';
   }
 
