@@ -1,0 +1,1 @@
+INSERT INTO metric_type (type) VALUES (?)
