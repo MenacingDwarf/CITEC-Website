@@ -2,6 +2,8 @@ package com.dreamwork.art.service;
 
 import com.dreamwork.art.model.Metric;
 import com.dreamwork.art.model.MetricsBatch;
+import com.dreamwork.art.repository.MetricsRepo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
 import org.springframework.core.type.filter.AssignableTypeFilter;
@@ -14,7 +16,8 @@ import java.util.*;
 public class MetricsConverter {
     private final List<Converter> converters;
 
-    public MetricsConverter() throws Exception {
+    @Autowired
+    public MetricsConverter(MetricsRepo repo) throws Exception {
         ClassPathScanningCandidateComponentProvider provider = new ClassPathScanningCandidateComponentProvider(false);
         provider.addIncludeFilter(new AssignableTypeFilter(Converter.class));
 
@@ -36,6 +39,8 @@ public class MetricsConverter {
                     throw new Exception("Types are not unique");
                 }
             }
+
+            repo.addTypes(types);
         }
 
         catch (IllegalAccessException | InstantiationException | ClassNotFoundException e) {

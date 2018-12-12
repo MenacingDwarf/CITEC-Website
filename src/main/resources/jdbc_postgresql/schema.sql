@@ -1,4 +1,5 @@
 DROP TABLE    IF EXISTS metric;
+DROP TABLE    IF EXISTS metric_type;
 DROP TABLE    IF EXISTS metric_group;
 DROP TABLE    IF EXISTS tag;
 DROP TABLE    IF EXISTS project;
@@ -34,10 +35,17 @@ CREATE TABLE metric_group
   createdAt TIMESTAMP
 );
 
+CREATE TABLE metric_type
+(
+  id SMALLSERIAL PRIMARY KEY,
+  type VARCHAR(127)
+);
+
 CREATE TABLE metric
 (
   groupId BIGINT REFERENCES metric_group(id) ON DELETE CASCADE,
-  type VARCHAR(255),
+  typeId SMALLINT REFERENCES metric_type(id),
   value FLOAT,
-  CONSTRAINT pk_metric PRIMARY KEY (groupId, type)
+  CONSTRAINT pk_metric PRIMARY KEY (groupId, typeId)
 );
+

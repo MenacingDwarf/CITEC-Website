@@ -48,9 +48,3 @@ INSERT INTO tag (projectId, tag) VALUES
   (6, 'web'), (6, 'media'),
   (7, 'robots');
 
---INSERT INTO metric_group (projectId, createdAt) VALUES
---  (1, '2012-09-17 17:44:42'), (1, '2012-09-17 18:47:52'), (1, '2012-09-17 19:45:15');
-
---INSERT INTO metric (groupId, type, value) VALUES
---  (1, 'test0', 1), (2, 'test0', 2), (3, 'test0', 3);
-

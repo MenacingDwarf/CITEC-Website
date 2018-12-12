@@ -3,13 +3,10 @@ package com.dreamwork.art.repository;
 import com.dreamwork.art.model.Metric;
 import com.dreamwork.art.model.MetricsBatch;
 import com.dreamwork.art.payload.ListedMetricGroup;
-import com.dreamwork.art.payload.Project;
 import com.dreamwork.art.tools.StringLoader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementSetter;
-import org.springframework.jdbc.core.RowCallbackHandler;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +20,7 @@ public class MetricsRepo {
     private final Calendar calendar;
 
     private final String listCmd;
+    private final String addTypeCmd;
     private final String setGroupsCmd;
     private final String setMetricsCmd;
     private final String getLatestMetricsCmd;
@@ -33,11 +31,12 @@ public class MetricsRepo {
         this.jdbc = jdbc;
         this.calendar = Calendar.getInstance(TimeZone.getDefault());
 
-        this.listCmd = StringLoader.load("jdbc/metrics/list.sql");
-        this.setGroupsCmd = StringLoader.load("jdbc/metrics/set_groups.sql");
-        this.setMetricsCmd = StringLoader.load("jdbc/metrics/set_metrics.sql");
-        this.getLatestMetricsCmd = StringLoader.load("jdbc/metrics/get_latest_metrics.sql");
-        this.getCurrentGroupSeqIndexCmd = StringLoader.load("jdbc/metrics/get_current_group_seq_index.sql");
+        this.listCmd = StringLoader.load("jdbc_postgresql/metrics/list.sql");
+        this.addTypeCmd = StringLoader.load("jdbc_postgresql/metrics/add_type.sql");
+        this.setGroupsCmd = StringLoader.load("jdbc_postgresql/metrics/set_groups.sql");
+        this.setMetricsCmd = StringLoader.load("jdbc_postgresql/metrics/set_metrics.sql");
+        this.getLatestMetricsCmd = StringLoader.load("jdbc_postgresql/metrics/get_latest_metrics.sql");
+        this.getCurrentGroupSeqIndexCmd = StringLoader.load("jdbc_postgresql/metrics/get_current_group_seq_index.sql");
     }
 
     @SuppressWarnings("ConstantConditions")
@@ -159,5 +158,22 @@ public class MetricsRepo {
                 }
             });
         }
+    }
+
+    public void addTypes(Collection<String> types) {
+        String[] arr = types.toArray(new String[0]);
+
+        jdbc.batchUpdate(addTypeCmd, new BatchPreparedStatementSetter() {
+            @Override
+            public void setValues(PreparedStatement ps, int i) throws SQLException {
+                ps.setString(1, arr[i]);
+            }
+
+
+            @Override
+            public int getBatchSize() {
+                return arr.length;
+            }
+        });
     }
 }

@@ -6,7 +6,6 @@ import com.dreamwork.art.tools.StringLoader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,16 +35,16 @@ public class ProjectRepo {
     public ProjectRepo(JdbcTemplate jdbc) throws IOException {
         this.jdbc = jdbc;
 
-        this.addCmd = StringLoader.load("jdbc/projects/add.sql");
-        this.addTagCmd = StringLoader.load("jdbc/projects/add_tag.sql");
-        this.deleteTagsCmd = StringLoader.load("jdbc/projects/delete_tags.sql");
-        this.deleteCmd = StringLoader.load("jdbc/projects/delete.sql");
-        this.updateCmd = StringLoader.load("jdbc/projects/update.sql");
-        this.listCmd = StringLoader.load("jdbc/projects/list.sql");
-        this.listActiveCmd = StringLoader.load("jdbc/projects/list_active.sql");
-        this.listUntrackedCmd = StringLoader.load("jdbc/projects/list_untracked.sql");
-        this.setGithubNodesCmd = StringLoader.load("jdbc/projects/set_github_nodes.sql");
-        this.getGeneralInfoCmd = StringLoader.load("jdbc/projects/get_general_info.sql");
+        this.addCmd = StringLoader.load("jdbc_postgresql/projects/add.sql");
+        this.addTagCmd = StringLoader.load("jdbc_postgresql/projects/add_tag.sql");
+        this.deleteTagsCmd = StringLoader.load("jdbc_postgresql/projects/delete_tags.sql");
+        this.deleteCmd = StringLoader.load("jdbc_postgresql/projects/delete.sql");
+        this.updateCmd = StringLoader.load("jdbc_postgresql/projects/update.sql");
+        this.listCmd = StringLoader.load("jdbc_postgresql/projects/list.sql");
+        this.listActiveCmd = StringLoader.load("jdbc_postgresql/projects/list_active.sql");
+        this.listUntrackedCmd = StringLoader.load("jdbc_postgresql/projects/list_untracked.sql");
+        this.setGithubNodesCmd = StringLoader.load("jdbc_postgresql/projects/set_github_nodes.sql");
+        this.getGeneralInfoCmd = StringLoader.load("jdbc_postgresql/projects/get_general_info.sql");
     }
 
     public List<Project> list(int limit, int offset) {
@@ -217,6 +216,7 @@ public class ProjectRepo {
 
         if (updatedProject.getTags() != null) {
             jdbc.update(this.deleteTagsCmd, ps -> ps.setLong(1, updatedProject.getId()));
+
             jdbc.batchUpdate(this.addTagCmd, new BatchPreparedStatementSetter() {
                 @Override
                 public void setValues(PreparedStatement ps, int i) throws SQLException {

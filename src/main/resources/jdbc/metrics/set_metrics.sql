@@ -1,1 +1,0 @@
-INSERT INTO metric (groupId, type, value) VALUES (?, ?, ?)

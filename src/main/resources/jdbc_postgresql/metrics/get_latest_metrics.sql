@@ -1,5 +1,5 @@
 SELECT
-  metric.type,
+  metric_type.type,
   metric.value,
   g.projectId
 
@@ -20,8 +20,10 @@ FROM
 
 INNER JOIN
   metric ON g.id = metric.groupId
+INNER JOIN
+  metric_type ON metric_type.id = metric.typeId
 WHERE
-  metric.type = ANY (?)
+  metric_type.type = ANY (?)
 
 ORDER BY
   g.projectId ASC;
