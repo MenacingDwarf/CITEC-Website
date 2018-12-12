@@ -1,12 +1,16 @@
 package com.dreamwork.art.service;
 
+import com.dreamwork.art.controllers.GithubApiCaller;
 import com.dreamwork.art.model.Metric;
 import com.dreamwork.art.model.MetricsBatch;
 import com.dreamwork.art.repository.MetricsRepo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
 import org.springframework.core.type.filter.AssignableTypeFilter;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -14,33 +18,45 @@ import java.util.*;
 
 @Service
 public class MetricsConverter {
-    private final List<Converter> converters;
+    private final static Logger logger = LoggerFactory.getLogger(GithubApiCaller.class);
+
+    private ClassPathScanningCandidateComponentProvider provider;
+    private List<Converter> converters;
+    private MetricsRepo metricsRepo;
+    private Set<String> currBeans;
 
     @Autowired
-    public MetricsConverter(MetricsRepo repo) throws Exception {
-        ClassPathScanningCandidateComponentProvider provider = new ClassPathScanningCandidateComponentProvider(false);
-        provider.addIncludeFilter(new AssignableTypeFilter(Converter.class));
+    public MetricsConverter(MetricsRepo metricsRepo) throws Exception {
+        this.provider = new ClassPathScanningCandidateComponentProvider(false);
+        this.provider.addIncludeFilter(new AssignableTypeFilter(Converter.class));
+        this.converters = new ArrayList<>();
+        this.metricsRepo = metricsRepo;
+        this.currBeans = new HashSet<>();
+    }
 
-        final Set<BeanDefinition> definitions = provider.findCandidateComponents("com.dreamwork.art.service.converters");
-        final Set<String> types = new HashSet<>();
+    @Scheduled(fixedDelayString = "${metricsapi.update}")
+    public void updateMetricConverters() throws ReflectiveOperationException {
+        logger.info("Converters update started.");
 
         try {
-            this.converters = new ArrayList<>(definitions.size());
+            Set<String> newMetricTypes = new HashSet<>();
 
-            for (BeanDefinition def : definitions) {
-                Converter converter = (Converter) Class.forName(def.getBeanClassName()).newInstance();
-                this.converters.add(converter);
+            final Set<BeanDefinition> beans = provider.findCandidateComponents("com.dreamwork.art.service.converters");
 
-                Set<String> newTypes = converter.types();
-                int preSize = types.size();
-                types.addAll(newTypes);
+            for (BeanDefinition bean : beans) {
+                String beanName = bean.getBeanClassName();
 
-                if (preSize + newTypes.size() != types.size()) {
-                    throw new Exception("Types are not unique");
+                if (!this.currBeans.contains(beanName)) {
+                    Converter converter = (Converter) Class.forName(beanName).newInstance();
+                    newMetricTypes.addAll(converter.types());
+                    this.converters.add(converter);
+                    this.currBeans.add(beanName);
                 }
             }
 
-            repo.addTypes(types);
+            metricsRepo.addTypes(newMetricTypes);
+
+            logger.info("Added new metric types: {}", newMetricTypes);
         }
 
         catch (IllegalAccessException | InstantiationException | ClassNotFoundException e) {
